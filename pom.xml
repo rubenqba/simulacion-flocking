@@ -1,0 +1,32 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.github.rubenqba.doctorado</groupId>
+	<artifactId>simulacion-flocking</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<dependencies>
+		<dependency>
+			<groupId>org.jfree</groupId>
+			<artifactId>jfreechart</artifactId>
+			<version>1.0.19</version>
+		</dependency>
+		<!-- <dependency> -->
+		<!-- <groupId>org.jogamp.gluegen</groupId> -->
+		<!-- <artifactId>gluegen-rt-main</artifactId> -->
+		<!-- <version>2.3.2</version> -->
+		<!-- </dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.jogamp.jogl</groupId> -->
+		<!-- <artifactId>jogl-all-main</artifactId> -->
+		<!-- <version>2.3.2</version> -->
+		<!-- </dependency> -->
+
+		<dependency>
+			<groupId>net.java.dev.jogl</groupId>
+			<artifactId>jogl</artifactId>
+			<version>1.1.1-rc6</version>
+		</dependency>
+
+	</dependencies>
+
+</project>
