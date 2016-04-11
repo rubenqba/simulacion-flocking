@@ -37,13 +37,13 @@ public class ObservadorMetricas implements ObservadorAmbiente {
     }
 
     public ObservadorMetricas(double maximaExtension, double maxPolarizacion) {
-        polarizacion = new XYSeries("Polarizaci�n");
-        extension = new XYSeries("Extensi�n");
+        polarizacion = new XYSeries("Polarización");
+        extension = new XYSeries("Extensión");
         factorColision = new XYSeries("Colisiones");
-        consExtension = new XYSeries(" Consistencia extensi�n");
-        consPolarizacion = new XYSeries(" Consistencia polarizaci�n");
+        consExtension = new XYSeries(" Consistencia extensión");
+        consPolarizacion = new XYSeries(" Consistencia polarización");
         calidad = new XYSeries("Calidad");
-        funcionObjetivo = new XYSeries("Funci�n objetivo");
+        funcionObjetivo = new XYSeries("Función objetivo");
 
         paramMaxExt = maximaExtension;
         paramMaxPol = maxPolarizacion;
@@ -113,13 +113,13 @@ public class ObservadorMetricas implements ObservadorAmbiente {
     public void mostrarReportes() {
         eliminarPromedio();
 
-        gPolarizacion = new Grafica("Polarizaci�n");
-        gExtension = new Grafica("Extensi�n");
+        gPolarizacion = new Grafica("Polarización");
+        gExtension = new Grafica("Extensión");
         gFactorColision = new Grafica("Factor Colisiones");
-        gConsExtension = new Grafica("Consistencia en la extensi�n");
-        gConsPolarizacion = new Grafica("Consistencia en la polarizaci�n");
+        gConsExtension = new Grafica("Consistencia en la Extensión");
+        gConsPolarizacion = new Grafica("Consistencia en la Polarización");
         gCalidad = new Grafica("Calidad");
-        gFuncionObjetivo = new Grafica("Funci�n objetivo");
+        gFuncionObjetivo = new Grafica("función objetivo");
 
         gPolarizacion.setEjeX("Iteraciones");
         gExtension.setEjeX("Iteraciones");
@@ -129,13 +129,13 @@ public class ObservadorMetricas implements ObservadorAmbiente {
         gCalidad.setEjeX("iteraciones");
         gFuncionObjetivo.setEjeX("Iteraciones");
 
-        gPolarizacion.setEjeY("Polarizaci�n");
-        gExtension.setEjeY("Extensi�n");
-        gFactorColision.setEjeY("FactorColisi�n");
+        gPolarizacion.setEjeY("Polarización");
+        gExtension.setEjeY("Extensión");
+        gFactorColision.setEjeY("FactorColisión");
         gConsExtension.setEjeY("Consistencia Extension");
-        gConsPolarizacion.setEjeY("Consistencia Polarizaci�n");
+        gConsPolarizacion.setEjeY("Consistencia Polarización");
         gCalidad.setEjeY("Calidad");
-        gFuncionObjetivo.setEjeY("Funci�n objetivo");
+        gFuncionObjetivo.setEjeY("Función objetivo");
 
         gPolarizacion.agregarPuntos(polarizacion);
         gExtension.agregarPuntos(extension);
@@ -174,14 +174,14 @@ public class ObservadorMetricas implements ObservadorAmbiente {
     public void mostrarReportesCortos() {
         eliminarPromedio();
 
-        Grafica graf1 = new Grafica("M�tricas");
-        Grafica graf2 = new Grafica("M�tricas");
+        Grafica graf1 = new Grafica("Métricas");
+        Grafica graf2 = new Grafica("Métricas");
 
         graf1.setEjeX("Iteraciones");
         graf2.setEjeX("Iteraciones");
 
-        graf1.setEjeY("M�tricas");
-        graf2.setEjeY("M�tricas");
+        graf1.setEjeY("Métricas");
+        graf2.setEjeY("Métricas");
 
         graf1.agregarPuntos(polarizacion);
         graf1.agregarPuntos(extension);
@@ -197,13 +197,13 @@ public class ObservadorMetricas implements ObservadorAmbiente {
     }
 
     public void mostrarDatos() {
-        mostrarDatos(polarizacion, "Polarizacion");
+        mostrarDatos(polarizacion, "Polarización");
         mostrarDatos(extension, "Extension");
         mostrarDatos(factorColision, "Colisiones ");
-        mostrarDatos(consPolarizacion, "Consistencia polarizaci�n");
-        mostrarDatos(consExtension, "Consistencia extensi�n");
+        mostrarDatos(consPolarizacion, "Consistencia Polarización");
+        mostrarDatos(consExtension, "Consistencia Extensión");
         mostrarDatos(calidad, "Calidad");
-        mostrarDatos(funcionObjetivo, "funci�n objetivo");
+        mostrarDatos(funcionObjetivo, "Función objetivo");
     }
 
     private void mostrarDatos(XYSeries datos, String nombre) {

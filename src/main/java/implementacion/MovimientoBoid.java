@@ -106,7 +106,6 @@ public class MovimientoBoid implements Movimiento {
                 mejorAptitud = aptitud;
             }
         }
-
         return o;
     }
 

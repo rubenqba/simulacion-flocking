@@ -100,7 +100,7 @@ public class Metrica {
 
             /////////////////////// fin calculo promedios////////////
 
-            //////// Calculando polarizaci�n,extension, colisiones y
+            //////// Calculando polarización,extension, colisiones y
             //////// consistencias//////////
 
             double polarizacion = 0.0;
@@ -197,7 +197,8 @@ public class Metrica {
     private double factorColisiones(Boid b)// retorna 1 si el agente est�
                                            // colisionando
     {
-        if (b.isEnEstadoColision()) return 1;
+        if (b.isEnEstadoColision())
+            return 1;
         return 0;
     }
 
@@ -288,7 +289,8 @@ public class Metrica {
         int size = agentes.size();
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                if (i == j) continue;
+                if (i == j)
+                    continue;
 
                 a = agentes.get(i);
                 b = agentes.get(j);
@@ -319,7 +321,8 @@ public class Metrica {
         double distanciaDeColision = a.getRadio() + b.getRadio();
         double distanciaAgentes = distancia(a, b);
 
-        if (distanciaDeColision >= distanciaAgentes) return true;
+        if (distanciaDeColision >= distanciaAgentes)
+            return true;
 
         return false;
     }
@@ -385,13 +388,11 @@ public class Metrica {
          * agentes.add(boid3);
          * agentes.add(boid2);
          * agentes.add(boid1);
-         * 
          * for(AgenteMovil a:agentes)
          * {
          * if(a instanceof Boid)
          * {
          * Boid b = (Boid)a;
-         * 
          * System.out.println();
          * System.out.println("Agente "+ b);
          * System.out.println("Ha colisionado "+b.getHaColisionado());

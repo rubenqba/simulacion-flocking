@@ -11,14 +11,10 @@ public class FuncionAptitudConcreta implements FuncionAptitud {
     private double parametroObstaculos = 1;
 
     public double funcionAptitud(double distancia, double pesoObstaculos) {
-        // TODO Auto-generated method stub
-
         return (pesoObstaculos + 1) * distancia;
     }
 
     public double pesoObstaculos(VecindadObstaculos obstaculos, AgenteMovil agente, AgenteMovil objetivo) {
-        // TODO Auto-generated method stub
-
         Vector posAgente = agente.getPosicion();
         double distAgenteObstaculo = 0;
 
