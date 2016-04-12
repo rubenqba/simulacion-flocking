@@ -22,7 +22,7 @@ import metricas.ObservadorVariablesEstado;
 
 public class Escenario3Test {
 
-    @Test
+    // @Test
     public void experimento1() throws InterruptedException {
 
         Escenarios e = Escenarios.builder()
