@@ -31,9 +31,8 @@ public class MovimientoCuatroEsquinas implements Movimiento {
 
     private double velMax = 0;
 
+    @Override
     public void mover(AgenteMovil agente) {
-        // TODO Auto-generated method stub
-
         Vector velocidad = calcularVelocidad(agente);
         Vector posicion = agente.getPosicion().clonar();
         posicion.sumar(velocidad);
@@ -44,10 +43,14 @@ public class MovimientoCuatroEsquinas implements Movimiento {
 
         Vector posicion = agente.getPosicion();
 
-        if (posicion.equals(esquinaSupIzq)) direccion = esquinaSupDer;
-        if (posicion.equals(esquinaSupDer)) direccion = esquinaInfDer;
-        if (posicion.equals(esquinaInfDer)) direccion = esquinaInfIzq;
-        if (posicion.equals(esquinaInfIzq)) direccion = esquinaSupIzq;
+        if (posicion.equals(esquinaSupIzq))
+            direccion = esquinaSupDer;
+        if (posicion.equals(esquinaSupDer))
+            direccion = esquinaInfDer;
+        if (posicion.equals(esquinaInfDer))
+            direccion = esquinaInfIzq;
+        if (posicion.equals(esquinaInfIzq))
+            direccion = esquinaSupIzq;
 
         Vector vel = direccion.clonar();
 

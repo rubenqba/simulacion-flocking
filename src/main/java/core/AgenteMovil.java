@@ -46,6 +46,7 @@ public abstract class AgenteMovil extends Agente {
         percepcion = new Percepcion();
         if (mov == null) {
             mov = new Movimiento() {
+                @Override
                 public void mover(AgenteMovil agente) {
                     // TODO Auto-generated method stub
                 }
@@ -72,6 +73,7 @@ public abstract class AgenteMovil extends Agente {
 
     public void setAmbiente(AmbienteMovil ambiente) {
         this.ambiente = ambiente;
+        ambiente.agregarAgente(this);
     }
 
     public AmbienteMovil getAmbiente() {
@@ -129,7 +131,7 @@ public abstract class AgenteMovil extends Agente {
     }
 
     public void draw()// Este metodo lo utiliza el paquete que me hizo Patrick
-                      // para la simulaci�n en 3D, cada subclase lo sobreescribe
+                      // para la simulación en 3D, cada subclase lo sobreescribe
     {
 
     }
@@ -148,37 +150,28 @@ public abstract class AgenteMovil extends Agente {
      * agente, double distanciaEntreAgentes)
      * {
      * ArrayList<AgenteMovil> agentes = new ArrayList<AgenteMovil>();
-     * 
      * agentes = agente.getAmbiente().getAgentes();
      * double distancia = 0;
      * Vector2D temp = null;
      * Vector2D nuevaPos = new Vector2D();
-     * 
      * for(AgenteMovil agenteActual:agentes)
      * {
      * if(agenteActual == agente)
      * continue;
-     * 
      * distancia = posicion.distancia(agenteActual.getPosicion());
-     * 
      * if(distancia ==0)//evitando division entre cero
      * continue;
-     * 
      * if(distancia < distanciaEntreAgentes)
      * {
      * //calcular nueva posicion
      * //pos = pos + [ radioEntreAgentes*( pos - posAgenteActual )/distancia ] -
      * (pos - posAgenteActual)
-     * 
      * temp = posicion.clonar();
      * temp.restar(agenteActual.getPosicion());// = pos - posAgenteActual
-     * 
      * nuevaPos = posicion.clonar();
      * nuevaPos.restar(temp);//pos - (pos - posAgenteActual)
-     * 
      * temp.multiplicarEscalar(distanciaEntreAgentes);
      * temp.multiplicarEscalar(1/distancia);
-     * 
      * nuevaPos.sumar(temp);
      * //establecer posicion nueva
      * posicion.setX(nuevaPos.getX());

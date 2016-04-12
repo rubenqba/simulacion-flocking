@@ -30,7 +30,7 @@ public class Escenario3 {
         boolean mostrarSimulacion = false;
         int iteraciones = 2000;
 
-        /** par�metros de los agentes **/
+        /** parámetros de los agentes **/
         double cantidadObjetivos = 1;
         double radioAgente = 3;
         double rangoDeInteraccion = 25;

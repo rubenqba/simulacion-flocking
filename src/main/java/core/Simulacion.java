@@ -2,13 +2,18 @@ package core;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import Graphics.Grafico;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import metricas.ObservadorAmbiente;
 
+@Builder
+@AllArgsConstructor
 public class Simulacion extends JFrame implements Runnable {
 
     private static final long serialVersionUID = 1L;
@@ -18,7 +23,7 @@ public class Simulacion extends JFrame implements Runnable {
     private boolean simulacionActiva = true;
     private boolean habilitarPintado = true;
     private boolean simulacion3D = false;
-    private ArrayList<ObservadorAmbiente> observadores;
+    private List<ObservadorAmbiente> observadores;
     Grafico graph;
 
     public AmbienteMovil getAmbiente() {
@@ -52,6 +57,7 @@ public class Simulacion extends JFrame implements Runnable {
         }
     }
 
+    @Override
     public void run() {
         int tiempo = 0;
 
@@ -65,7 +71,8 @@ public class Simulacion extends JFrame implements Runnable {
                 repaint();
                 tiempo++;
 
-                if (tiempo % 100 == 0) System.out.println(tiempo);
+                if (tiempo % 100 == 0)
+                    System.out.println(tiempo);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -139,6 +146,10 @@ public class Simulacion extends JFrame implements Runnable {
 
     public boolean isHabilitarPintado() {
         return habilitarPintado;
+    }
+
+    public List<ObservadorAmbiente> getObservadores() {
+        return observadores;
     }
 
 }

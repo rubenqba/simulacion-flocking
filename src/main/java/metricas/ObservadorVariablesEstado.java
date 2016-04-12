@@ -13,6 +13,7 @@ public class ObservadorVariablesEstado implements ObservadorAmbiente {
     private ArrayList<double[]> datos;
     private int numIteracion = 0;
 
+    @Override
     public void observarAmbiente(AmbienteMovil ambiente) {
 
         if (indiceAgenteObservado == -1) {
@@ -78,6 +79,11 @@ public class ObservadorVariablesEstado implements ObservadorAmbiente {
 
     public void setDatos(ArrayList<double[]> datos) {
         this.datos = datos;
+    }
+
+    @Override
+    public String getName() {
+        return "posicion";
     }
 
 }

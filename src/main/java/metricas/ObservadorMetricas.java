@@ -49,6 +49,7 @@ public class ObservadorMetricas implements ObservadorAmbiente {
         paramMaxPol = maxPolarizacion;
     }
 
+    @Override
     public void observarAmbiente(AmbienteMovil ambiente) {
 
         if (metricas != null) {
@@ -244,14 +245,9 @@ public class ObservadorMetricas implements ObservadorAmbiente {
         return promedioAgregado;
     }
 
-    public static void main(String ar[]) {
-        XYSeries xy = new XYSeries("");
-        xy.add(1, 2);
-        xy.add(2, 3);
-
-        // xy.remove(1);
-        System.out.println(xy.getX(0));
-        System.out.println(xy.getItemCount());
+    @Override
+    public String getName() {
+        return "metricas";
     }
 
 }

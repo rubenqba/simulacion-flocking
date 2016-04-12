@@ -1,104 +1,111 @@
 package tiposagentes;
+
 import java.awt.Graphics;
-
-
 
 import Graphics.Forma;
 import Vecindades.VecindadObjetivos;
-import core.*;
+import core.AgenteMovil;
+import core.AmbienteMovil;
+import core.Movimiento;
+import core.Percepcion;
+import core.Util;
+import core.Vector;
+
 public class Boid extends AgenteMovil {
 
-	private VecindadObjetivos objetivos;
-	public Objetivo objetivo;//:PpP
-	private Boid mejorDelGrupo;
-	private double valorFuncionObjetivo = 0.0;
-	
-	private boolean haColisionado = false;
-	private boolean enEstadoColision = false;
-	
-	public Boid(double x, double y, AmbienteMovil ambiente) {
-		super(x, y, ambiente);		
-	}
-	
-	public Boid(double x, double y, double z, AmbienteMovil ambiente)
-	{
-		super(x,y,z,ambiente);
-	}
+    private VecindadObjetivos objetivos;
+    public Objetivo objetivo;// :PpP
+    private Boid mejorDelGrupo;
+    private double valorFuncionObjetivo = 0.0;
 
-	@Override
-	public void percibirme(Percepcion p) {
-		p.percibir(this);
-		
-	}
+    private boolean haColisionado = false;
+    private boolean enEstadoColision = false;
 
-	public String toString()
-	{
-		Vector pos = this.getPosicion();
-		return "Boid("+ pos.get(0)+","+pos.get(1)+")";
-	}
+    public Boid(double x, double y, AmbienteMovil ambiente) {
+        super(x, y, ambiente);
+    }
 
-	public void setObjetivos(VecindadObjetivos objetivos) {
-		this.objetivos = objetivos;
-		objetivo = objetivos.get(0);
-	}
+    public Boid(double x, double y, AmbienteMovil ambiente, Movimiento movimiento) {
+        super(x, y, ambiente, movimiento);
+    }
 
-	public VecindadObjetivos getObjetivos() {
-		return objetivos;
-	}
-		
-	public void draw ()
-	{			
-		Forma form=new Forma();
-		form.Dibujar_esfera(this);		
-	}
-	
-	public void pintar(Graphics g)
-	{
-		
-		int cordx = (int) Math.round(this.getPosicion().get(0));
-		int cordy = (int) Math.round(getPosicion().get(1));
-		int radio = (int) Math.round(getRadio());
-		Util.rellenarCirculo(g, cordx, cordy, radio);
-	}
+    public Boid(double x, double y, double z, AmbienteMovil ambiente) {
+        super(x, y, z, ambiente);
+    }
 
+    @Override
+    public void percibirme(Percepcion p) {
+        p.percibir(this);
 
-	public void setObjetivo(Objetivo objetivo) {
-		this.objetivo = objetivo;
-	}
+    }
 
-	public Objetivo getObjetivo() {
-		return objetivo;
-	}
+    @Override
+    public String toString() {
+        Vector pos = this.getPosicion();
+        return "Boid(" + pos.get(0) + "," + pos.get(1) + ")";
+    }
 
-	public void setHaColisionado(boolean haColisionado) {
-		this.haColisionado = haColisionado;
-	}
+    public void setObjetivos(VecindadObjetivos objetivos) {
+        this.objetivos = objetivos;
+        objetivo = objetivos.get(0);
+    }
 
-	public boolean getHaColisionado() {
-		return haColisionado;
-	}
+    public VecindadObjetivos getObjetivos() {
+        return objetivos;
+    }
 
-	public void setEnEstadoColision(boolean enEstadoColision) {
-		this.enEstadoColision = enEstadoColision;
-	}
+    @Override
+    public void draw() {
+        Forma form = new Forma();
+        form.Dibujar_esfera(this);
+    }
 
-	public boolean isEnEstadoColision() {
-		return enEstadoColision;
-	}
+    @Override
+    public void pintar(Graphics g) {
 
-	public void setMejorDelGrupo(Boid mejorDelGrupo) {
-		this.mejorDelGrupo = mejorDelGrupo;
-	}
+        int cordx = (int) Math.round(this.getPosicion().get(0));
+        int cordy = (int) Math.round(getPosicion().get(1));
+        int radio = (int) Math.round(getRadio());
+        Util.rellenarCirculo(g, cordx, cordy, radio);
+    }
 
-	public Boid getMejorDelGrupo() {
-		return mejorDelGrupo;
-	}
+    public void setObjetivo(Objetivo objetivo) {
+        this.objetivo = objetivo;
+    }
 
-	public void setValorFuncionObjetivo(double valorFuncionObjetivo) {
-		this.valorFuncionObjetivo = valorFuncionObjetivo;
-	}
+    public Objetivo getObjetivo() {
+        return objetivo;
+    }
 
-	public double getValorFuncionObjetivo() {
-		return valorFuncionObjetivo;
-	}
+    public void setHaColisionado(boolean haColisionado) {
+        this.haColisionado = haColisionado;
+    }
+
+    public boolean getHaColisionado() {
+        return haColisionado;
+    }
+
+    public void setEnEstadoColision(boolean enEstadoColision) {
+        this.enEstadoColision = enEstadoColision;
+    }
+
+    public boolean isEnEstadoColision() {
+        return enEstadoColision;
+    }
+
+    public void setMejorDelGrupo(Boid mejorDelGrupo) {
+        this.mejorDelGrupo = mejorDelGrupo;
+    }
+
+    public Boid getMejorDelGrupo() {
+        return mejorDelGrupo;
+    }
+
+    public void setValorFuncionObjetivo(double valorFuncionObjetivo) {
+        this.valorFuncionObjetivo = valorFuncionObjetivo;
+    }
+
+    public double getValorFuncionObjetivo() {
+        return valorFuncionObjetivo;
+    }
 }

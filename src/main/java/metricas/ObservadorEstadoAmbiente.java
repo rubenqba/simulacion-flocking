@@ -6,6 +6,7 @@ import tiposagentes.Boid;
 
 public class ObservadorEstadoAmbiente implements ObservadorAmbiente {
 
+    @Override
     public void observarAmbiente(AmbienteMovil ambiente) {
 
         System.out.println();
@@ -20,6 +21,11 @@ public class ObservadorEstadoAmbiente implements ObservadorAmbiente {
             }
         }
 
+    }
+
+    @Override
+    public String getName() {
+        return "ambiente";
     }
 
 }

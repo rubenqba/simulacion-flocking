@@ -5,6 +5,6 @@ import java.util.ArrayList;
 import tiposagentes.Objetivo;
 
 @SuppressWarnings("serial")
-public class VecindadObjetivos extends ArrayList<Objetivo>{
+public class VecindadObjetivos extends ArrayList<Objetivo> {
 
 }
