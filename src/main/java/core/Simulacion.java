@@ -71,8 +71,8 @@ public class Simulacion extends JFrame implements Runnable {
                 repaint();
                 tiempo++;
 
-                if (tiempo % 100 == 0)
-                    System.out.println(tiempo);
+                // if (tiempo % 100 == 0)
+                // System.out.println(tiempo);
             }
         } catch (Exception e) {
             e.printStackTrace();

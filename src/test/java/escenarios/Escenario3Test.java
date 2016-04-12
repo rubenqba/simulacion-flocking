@@ -126,6 +126,7 @@ public class Escenario3Test {
 
     public void experimento(String name, Integer agentes, Double c1, Double c2, Double c3) throws InterruptedException {
 
+        System.out.println(name);
         Escenarios e = Escenarios.builder()
                 .calcularMetricas(true)
                 .sensarEstado(false)
