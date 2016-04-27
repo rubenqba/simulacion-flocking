@@ -162,7 +162,7 @@ public class Escenario3Test {
         assertThat(e.getConfiguracionAgente().getRadioAgente(), equalTo(3d));
         assertThat(e.getConfiguracionModelo(), notNullValue());
         assertThat(e.getConfiguracionModelo().getC1(), equalTo(c1));
-        assertThat(e.getConfiguracionModelo().getC3(), equalTo(c2));
+        assertThat(e.getConfiguracionModelo().getC3(), equalTo(c3));
         assertThat(e.getConfiguracionModelo().getVelMax(), equalTo(4d));
 
         for (int i = 0; i < e.getConfiguracionAgente().getCantidadObjetivos(); i++) {
