@@ -7,6 +7,8 @@ import static org.hamcrest.Matchers.notNullValue;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.junit.Test;
 
@@ -231,16 +233,20 @@ public class Escenario3Test {
         List<Integer> cantidadAgentes = Arrays.asList(100, 150, 200, 250, 300, 350, 400, 450, 500);
         List<Double> valoresC1 = Arrays.asList(-.9, -.8, -.7, -.6, -.5, -.4, -.3, -.2, -.1, 0d, .1, .2, .3, .4, .5, .6,
                 .7, .8, .9);
-        Double c2 = .2;
-        Double c3 = .2;
+        List<Double> valoresC3Min = IntStream.range(1, 20).mapToObj(i -> Integer.valueOf(i).doubleValue())
+                .collect(Collectors.toList());
+        List<Double> valoresC3Max = Arrays.asList(-.1, .1, .3, .5, .7, .9, 1.1, 1.3, 1.5, 1.7, 1.9, 2.1, 2.3, 2.5, 2.7,
+                2.9, 3.1, 3.3, 3.5);
 
-        for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
             for (Integer agentes : cantidadAgentes) {
-                for (Double c1 : valoresC1) {
+                for (int i = 0; i < valoresC1.size(); i++) {
+                    Double c1 = valoresC1.get(i);
+                    Double c2 = .2;
+                    Double c3 = valoresC3Max.get(i);
                     if (c3 >= (2 + 2 * c1 + c2)) {
                         c3 = (2 + 2 * c1 + c2) / 2;
                     }
-
                     experimento(String.format("Prueba_%d_%1.2f_%1.2f_%1.2f", agentes.intValue(),
                             c1.doubleValue(), c2.doubleValue(), c3.doubleValue()), agentes, c1, c2, c3);
                 }
