@@ -5,8 +5,14 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import org.junit.Test;
 
@@ -16,6 +22,7 @@ import core.AmbienteMovil;
 import core.Simulacion;
 import core.Util;
 import core.Vector;
+import lombok.AllArgsConstructor;
 import metricas.ObservadorAmbiente;
 import metricas.ObservadorMetricas;
 import metricas.ObservadorVariablesEstado;
@@ -236,20 +243,49 @@ public class Escenario3Test {
         Double c2 = .2;
         Double c3Min = -.1;
 
+        ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
+        List<Future<Void>> tasks = new ArrayList<>();
+
         for (int j = 0; j < 10; j++) {
             for (Integer agentes : cantidadAgentes) {
                 for (Double c1 : valoresC1) {
                     // prueba con c3Min = -0.1
-                    experimento(String.format("Prueba_%d_%1.2f_%1.2f_%1.2f", agentes.intValue(),
-                            c1.doubleValue(), c2.doubleValue(), c3Min.doubleValue()), agentes, c1, c2, c3Min);
+                    tasks.add(pool.submit(new Experimento(agentes, c1, c2, c3Min)));
+                    // experimento(String.format("Prueba_%d_%1.2f_%1.2f_%1.2f", agentes.intValue(),
+                    // c1.doubleValue(), c2.doubleValue(), c3Min.doubleValue()), agentes, c1, c2, c3Min);
                     for (Double c3 : valoresC3Max) {
                         // prueba con valores de c3
-                        experimento(String.format("Prueba_%d_%1.2f_%1.2f_%1.2f", agentes.intValue(),
-                                c1.doubleValue(), c2.doubleValue(), c3.doubleValue()), agentes, c1, c2, c3);
+                        tasks.add(pool.submit(new Experimento(agentes, c1, c2, c3)));
+                        // experimento(String.format("Prueba_%d_%1.2f_%1.2f_%1.2f", agentes.intValue(),
+                        // c1.doubleValue(), c2.doubleValue(), c3.doubleValue()), agentes, c1, c2, c3);
                     }
                 }
             }
         }
+
+        tasks.stream().forEach(t -> {
+            try {
+                t.get();
+            } catch (InterruptedException | ExecutionException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @AllArgsConstructor
+    private final class Experimento implements Callable<Void> {
+
+        private Integer agentes;
+        private Double c1, c2, c3;
+
+        @Override
+        public Void call() throws Exception {
+            experimento(String.format("Prueba_%d_%1.2f_%1.2f_%1.2f", agentes.intValue(),
+                    c1.doubleValue(), c2.doubleValue(), c3.doubleValue()), agentes, c1, c2, c3);
+            return null;
+        }
+
     }
 
 }
