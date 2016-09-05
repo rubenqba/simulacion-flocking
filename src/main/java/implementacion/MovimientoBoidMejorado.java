@@ -92,9 +92,9 @@ public class MovimientoBoidMejorado extends MovimientoBoid {
      * @param radioB
      * @return
      */
-    private boolean habraColision(Vector centrA, Vector centrB, Vector direccionA, double radioA, double radioB) {
+    private boolean habraColision(Vector centroA, Vector centroB, Vector direccionA, double radioA, double radioB) {
         double anguloMinimo = 0.0;
-        double distancia = centrA.distancia(centrB);
+        double distancia = centroA.distancia(centroB);
         double separacion = radioA + radioB;
 
         double temp = 0;
@@ -107,8 +107,8 @@ public class MovimientoBoidMejorado extends MovimientoBoid {
         anguloMinimo = Math.atan(var);
         anguloMinimo = Math.toDegrees(anguloMinimo);
 
-        Vector BmenosA = centrB.clonar();
-        BmenosA.restar(centrA);
+        Vector BmenosA = centroB.clonar();
+        BmenosA.restar(centroA);
         double anguloReal = Util.anguloEntreVectores(direccionA, BmenosA);
 
         if (anguloReal < anguloMinimo)
@@ -123,7 +123,7 @@ public class MovimientoBoidMejorado extends MovimientoBoid {
      * @param z
      * @return
      */
-    private double f(double z) {
+    protected double f(double z) {
         if (z < 0)
             return 0.0001;
         if (z > 1)

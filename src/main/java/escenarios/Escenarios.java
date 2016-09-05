@@ -9,8 +9,10 @@ import java.util.Map;
 import Vecindades.VecindadObjetivos;
 import core.AmbienteMovil;
 import core.Movimiento;
+import implementacion.MovimientoBoidIntegral;
 import implementacion.MovimientoBoidMejorado;
 import implementacion.MovimientoCuatroEsquinas;
+import implementacion.TipoMovimiento;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -119,10 +121,34 @@ class ConfiguracionModelo {
         return mov;
     }
 
+    public MovimientoBoidIntegral buildMovimientoBoidIntegral(double epsilon) {
+        MovimientoBoidIntegral mov = new MovimientoBoidIntegral(epsilon);
+        mov.setC1(c1);
+        mov.setC2(c2);
+        mov.setC3(c3);
+        mov.setParametroObstaculos(parametroObstaculos);
+        mov.setVelMax(velMax);
+        mov.setZonaVirtual(zonaVirtual);
+        return mov;
+    }
+
     public Movimiento buildMovimientoCuatroEsquinas() {
         MovimientoCuatroEsquinas movObjetivo = new MovimientoCuatroEsquinas();
         movObjetivo.setVelMax(velMax + 5);
         return movObjetivo;
+    }
+
+    public Movimiento buildMovimiento(TipoMovimiento m, Object ...params) {
+        switch(m){
+            case INTEGRAL:
+                return buildMovimientoBoidIntegral((Double) params[0]);
+            case MEJORADO:
+                return buildMovimientoBoidMejorado();
+            case CUATRO_ESQUINAS:
+                return buildMovimientoCuatroEsquinas();
+            default:
+                return null;
+        }
     }
 }
 
@@ -170,23 +196,6 @@ class MovimientoBuilder {
     public MovimientoBuilder withZonaVirtual(double zonaVirtual) {
         this.zonaVirtual = zonaVirtual;
         return this;
-    }
-
-    public MovimientoBoidMejorado buildMovimientoBoidMejorado() {
-        MovimientoBoidMejorado mov = new MovimientoBoidMejorado();
-        mov.setC1(c1);
-        mov.setC2(c2);
-        mov.setC3(c3);
-        mov.setParametroObstaculos(parametroObstaculos);
-        mov.setVelMax(velMax);
-        mov.setZonaVirtual(zonaVirtual);
-        return mov;
-    }
-
-    public Movimiento buildMovimientoCuatroEsquinas() {
-        MovimientoCuatroEsquinas movObjetivo = new MovimientoCuatroEsquinas();
-        movObjetivo.setVelMax(velMax + 5);
-        return movObjetivo;
     }
 }
 

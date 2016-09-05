@@ -14,6 +14,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import implementacion.TipoMovimiento;
 import org.junit.Test;
 
 import Vecindades.VecindadObjetivos;
@@ -131,7 +132,7 @@ public class Escenario3Test {
         }
     }
 
-    public void experimento(String name, Integer agentes, Double c1, Double c2, Double c3) throws InterruptedException {
+    public void experimento(String name, Integer agentes, Double c1, Double c2, Double c3, TipoMovimiento movimiento, Object...movParams) throws InterruptedException {
 
         System.out.println(name);
         Escenarios e = Escenarios.builder()
@@ -192,7 +193,7 @@ public class Escenario3Test {
                     .withAmbiente(e.getAmbiente())
                     .withX(v.get(0))
                     .withY(v.get(1))
-                    .withMovimiento(e.getConfiguracionModelo().buildMovimientoBoidMejorado())
+                    .withMovimiento(e.getConfiguracionModelo().buildMovimiento(movimiento, movParams))
                     .withConfiguracionAgente(e.getConfiguracionAgente())
                     .buildBoid();
         }
@@ -250,14 +251,48 @@ public class Escenario3Test {
             for (Integer agentes : cantidadAgentes) {
                 for (Double c1 : valoresC1) {
                     // prueba con c3Min = -0.1
-                    tasks.add(pool.submit(new Experimento(agentes, c1, c2, c3Min)));
+                    tasks.add(pool.submit(new Experimento(agentes, c1, c2, c3Min, TipoMovimiento.MEJORADO, null)));
                     // experimento(String.format("Prueba_%d_%1.2f_%1.2f_%1.2f", agentes.intValue(),
                     // c1.doubleValue(), c2.doubleValue(), c3Min.doubleValue()), agentes, c1, c2, c3Min);
                     for (Double c3 : valoresC3Max) {
                         // prueba con valores de c3
-                        tasks.add(pool.submit(new Experimento(agentes, c1, c2, c3)));
+                        tasks.add(pool.submit(new Experimento(agentes, c1, c2, c3, TipoMovimiento.MEJORADO, null)));
                         // experimento(String.format("Prueba_%d_%1.2f_%1.2f_%1.2f", agentes.intValue(),
                         // c1.doubleValue(), c2.doubleValue(), c3.doubleValue()), agentes, c1, c2, c3);
+                    }
+                }
+            }
+        }
+
+        tasks.stream().forEach(t -> {
+            try {
+                t.get();
+            } catch (InterruptedException | ExecutionException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @Test
+    public void testGustavo() throws InterruptedException {
+        List<Integer> cantidadAgentes = Arrays.asList(100, 150, 200, 250, 300, 350, 400, 450, 500);
+        List<Double> valoresC1 = Arrays.asList(-.9, -.8, -.7, -.6, -.5, -.4, -.3, -.2, -.1, 0d, .1, .2, .3, .4, .5, .6,
+                .7, .8, .9);
+        List<Double> valoresC3Max = Arrays.asList(.1, .3, .5, .7, .9, 1.1, 1.3, 1.5, 1.7, 1.9, 2.1, 2.3, 2.5, 2.7,
+                2.9, 3.1, 3.3, 3.5);
+        Double c2 = .2;
+        Double c3Min = -.1;
+
+        ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1);
+        List<Future<Void>> tasks = new ArrayList<>();
+
+        for (int j = 0; j < 10; j++) {
+            for (Integer agentes : cantidadAgentes) {
+                for (Double c1 : valoresC1) {
+                    tasks.add(pool.submit(new Experimento(agentes, c1, c2, c3Min, TipoMovimiento.INTEGRAL, new Object[]{0.002d})));
+                    for (Double c3 : valoresC3Max) {
+                        tasks.add(pool.submit(new Experimento(agentes, c1, c2, c3, TipoMovimiento.INTEGRAL, new Object[]{0.002d})));
                     }
                 }
             }
@@ -278,11 +313,13 @@ public class Escenario3Test {
 
         private Integer agentes;
         private Double c1, c2, c3;
+        private TipoMovimiento movimiento;
+        private Object[] movParams;
 
         @Override
         public Void call() throws Exception {
             experimento(String.format("Prueba_%d_%1.2f_%1.2f_%1.2f", agentes.intValue(),
-                    c1.doubleValue(), c2.doubleValue(), c3.doubleValue()), agentes, c1, c2, c3);
+                    c1.doubleValue(), c2.doubleValue(), c3.doubleValue()), agentes, c1, c2, c3, movimiento, movParams);
             return null;
         }
 
