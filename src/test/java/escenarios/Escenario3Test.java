@@ -150,7 +150,7 @@ public class Escenario3Test {
         }
     }
 
-    //@Test
+    @Test
     public void testGustavo() throws InterruptedException, ExecutionException {
         List<Integer> cantidadAgentes = Arrays.asList(100, 150, 200, 250, 300, 350, 400, 450, 500);
         List<Double> valoresC1 = Arrays.asList(-.9, -.8, -.7, -.6, -.5, -.4, -.3, -.2, -.1, 0d, .1, .2, .3, .4, .5, .6,
