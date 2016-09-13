@@ -11,6 +11,7 @@ import Graphics.Grafico;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import metricas.ObservadorAmbiente;
+import org.apache.commons.lang3.time.StopWatch;
 
 @Builder
 @AllArgsConstructor
@@ -60,20 +61,26 @@ public class Simulacion extends JFrame implements Runnable {
     @Override
     public void run() {
         int tiempo = 0;
-
+//        StopWatch w = new StopWatch();
         try {
-
+//            w.start();
             while (tiempo <= iteraciones && simulacionActiva) {
 
-                Thread.sleep(delaySimulacion);
+                if (delaySimulacion > 0)
+                    Thread.sleep(delaySimulacion);
+//                if(w.isSuspended())
+//                    w.resume();
                 actuar();
                 notificarObservadores();
-                repaint();
+//                w.split();
+//                System.out.println(String.format("it(%d): %s", tiempo, w.toSplitString()));
+//                w.suspend();
+                if (habilitarPintado)
+                    repaint();
                 tiempo++;
-
-                // if (tiempo % 100 == 0)
-                // System.out.println(tiempo);
             }
+//            w.stop();
+//            System.out.println(String.format("Time: %dms", w.getTime()));
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, e.getMessage());
@@ -82,10 +89,13 @@ public class Simulacion extends JFrame implements Runnable {
     }
 
     protected void actuar() {
+//        StopWatch w = new StopWatch();
+//        w.start();
         for (AgenteMovil agente : ambiente.getAgentes()) {
             agente.actuar();
         }
-
+//        w.stop();
+//        System.out.println(String.format("actuar: %dms", w.getTime()));
     }
 
     @Override

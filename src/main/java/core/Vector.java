@@ -1,5 +1,11 @@
 package core;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Arrays;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 public class Vector {
     private double datos[];
     private int dimension = 2;
@@ -20,80 +26,58 @@ public class Vector {
     }
 
     public void sumar(Vector v) {
-        for (int i = 0; i < dimension; i++)
-            datos[i] += v.get(i);
+        IntStream.range(0, dimension)
+                .forEach(i -> datos[i] += v.get(i));
     }
 
     public void restar(Vector v) {
-        for (int i = 0; i < dimension; i++)
-            datos[i] -= v.get(i);
+        IntStream.range(0, dimension)
+                .forEach(i -> datos[i] -= v.get(i));
     }
 
     public void multiplicarEscalar(double escalar) {
-        for (int i = 0; i < dimension; i++)
-            datos[i] *= escalar;
+        IntStream.range(0, dimension)
+                .forEach(i -> datos[i] *= escalar);
     }
 
     public double norma() {
-        double normaSinRaiz = normaSinRaiz();
-        return Math.sqrt(normaSinRaiz);
-    }
-
-    public double normaSinRaiz() {
-        double norma = 0;
-
-        for (int i = 0; i < dimension; i++)
-            norma = norma + (datos[i] * datos[i]);
-
-        return norma;
+        return Math.sqrt(Arrays.stream(datos).parallel().map(d -> d * d).sum());
     }
 
     public double distancia(Vector v) {
-        double res = distanciaSinRaiz(v);
-        return Math.sqrt(res);
+        return Math.sqrt(IntStream.range(0, dimension)
+                .mapToDouble(i -> (datos[i] - v.get(i)) * (datos[i] - v.get(i)))
+                .reduce(0, Double::sum));
     }
 
-    public double distanciaSinRaiz(Vector v) {
-        double temp = 0;
-        double res = 0;
-
-        for (int i = 0; i < dimension; i++) {
-            temp = datos[i] - v.get(i);
-            res += temp * temp;
-        }
-
-        return res;
-    }
-
-    public double productoPunto(Vector v) {
-        double res = 0;
-
-        for (int i = 0; i < dimension; i++) {
-            res = res + (datos[i] * v.get(i));
-        }
-
-        return res;
+    public double productoEscalar(Vector v) {
+        return IntStream.range(0, dimension)
+                .mapToDouble(i -> datos[i] * v.get(i))
+                .reduce(0, Double::sum);
     }
 
     public Vector clonar() {
         return new Vector(datos);
     }
 
-    public boolean equals(Vector v) {
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || !Vector.class.isAssignableFrom(obj.getClass())) {
+            return false;
+        }
+        Vector v = (Vector) obj;
         if (v.getDimension() != dimension)
             return false;
 
-        for (int i = 0; i < dimension; i++) {
-            if (datos[i] != v.get(i))
-                return false;
-        }
-
-        return true;
+        return IntStream.range(0, dimension)
+                .parallel()
+                .filter(i -> datos[i] != v.get(i))
+                .findFirst()
+                .orElse(-1) == -1;
     }
 
-    public void acotarMagnitud(double cota) {
+    public void normalizar(double cota) {
         Double norma = norma();
-
         if (!norma.isNaN()) {
             this.multiplicarEscalar(cota / norma);
         }
@@ -101,8 +85,7 @@ public class Vector {
 
     public Vector unitario() {
         Vector nuevo = clonar();
-        nuevo.acotarMagnitud(1.0);
-
+        nuevo.normalizar(1.0);
         return nuevo;
     }
 
@@ -124,11 +107,7 @@ public class Vector {
     public String toString() {
         StringBuffer s = new StringBuffer();
         s.append("[");
-
-        for (int i = 0; i < dimension; i++) {
-            s.append(datos[i] + ", ");
-        }
-
+        s.append(StringUtils.join(Arrays.stream(datos).mapToObj(Double::toString).collect(Collectors.toList()), ", "));
         s.append("]");
         return s.toString();
     }
@@ -139,9 +118,27 @@ public class Vector {
 
     public static void main(String ar[]) {
         Vector v = new Vector(5, 4);
+        Vector u = new Vector(3, 4);
+
+        System.out.println(u);
+        System.out.println(v);
 
         v.unitario();
         System.out.println(v.norma());
 
+
+        System.out.println(u.norma());
+
+        System.out.println(u.productoEscalar(v));
+
+        System.out.println(u.equals(v));
+        System.out.println(u.equals(u));
+        System.out.println(v.equals(u));
+        System.out.println(v.equals(v));
+
+        System.out.println(v.distancia(u));
+        System.out.println(u.distancia(v));
+        System.out.println(v.distancia(v));
+        System.out.println(u.distancia(u));
     }
 }

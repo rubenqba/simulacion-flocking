@@ -7,9 +7,6 @@ import tiposagentes.Boid;
 import tiposagentes.Objetivo;
 import tiposagentes.Obstaculo;
 
-import core.AgenteMovil;
-import core.Vector;
-
 public class Util {
 	
 	/*
@@ -35,7 +32,7 @@ public class Util {
 			return true;
 	
 		double anguloNecesario = Math.atan(radioB / normaBA);
-		double productoBACA = BA.productoPunto(CA);
+		double productoBACA = BA.productoEscalar(CA);
 		
 		
 		double angulo =Math.acos( productoBACA / (normaBA*normaCA) );
@@ -49,8 +46,8 @@ public class Util {
 	/*
 	 * Recibe un vector de posicion y 
 	 * el centro y radio de una esfera.
-	 * La esfera representa un obstáculo
-	 * Retorna el punto más cercano al agente y que pertenece a la esfera
+	 * La esfera representa un obstï¿½culo
+	 * Retorna el punto mï¿½s cercano al agente y que pertenece a la esfera
 	 */
 	public static Vector calcularPuntoMasCercanoAlObstaculo(Vector posicionAgente, Vector posObstaculo, double radioObstaculo)
 	{
@@ -167,7 +164,7 @@ public class Util {
 			return 0.0;
 		}
 		
-		double productoPunto = A.productoPunto(B);					
+		double productoPunto = A.productoEscalar(B);
 				
 		float dotProduct = new Double(productoPunto).floatValue();
 		float div = new Double(normaA*normaB).floatValue();

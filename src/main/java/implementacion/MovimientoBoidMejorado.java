@@ -25,7 +25,7 @@ public class MovimientoBoidMejorado extends MovimientoBoid {
 
         }
 
-        vel.acotarMagnitud(velMax);
+        vel.normalizar(velMax);
 
     }
 

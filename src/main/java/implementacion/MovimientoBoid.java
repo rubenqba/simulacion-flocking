@@ -25,16 +25,13 @@ public class MovimientoBoid implements Movimiento {
     private double mejorAptitud = Double.POSITIVE_INFINITY;
 
     public void mover(AgenteMovil agente) {
-
         if (agente instanceof Boid) {
-
             desplazarAgente((Boid) agente);
         }
     }
 
     public void desplazarAgente(Boid boid) {
         Vector vel = calcularVelocidad(boid);
-
         Vector posicionAgente = boid.getPosicion();
 
         posicionAgente.sumar(vel);
@@ -88,7 +85,7 @@ public class MovimientoBoid implements Movimiento {
 
     public Objetivo calcularObjetivo(VecindadObjetivos objetivos, Boid boid, VecindadObstaculos obstaculos) {
         mejorAptitud = Double.POSITIVE_INFINITY;// la mejor aptitud es la mas
-                                                // peque�a
+                                                // pequeña
         Objetivo o = null;
 
         double distancia = 0;

@@ -95,7 +95,7 @@ class MovimientoObjetivo implements Movimiento {
         // TODO Auto-generated method stub
         Vector F = meta.clonar();
         F.restar(agente.getPosicion());
-        F.acotarMagnitud(agente.getVelMax());
+        F.normalizar(agente.getVelMax());
 
         agente.getPosicion().sumar(F);
 

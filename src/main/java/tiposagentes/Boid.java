@@ -81,7 +81,7 @@ public class Boid extends AgenteMovil {
         this.haColisionado = haColisionado;
     }
 
-    public boolean getHaColisionado() {
+    public boolean isHaColisionado() {
         return haColisionado;
     }
 

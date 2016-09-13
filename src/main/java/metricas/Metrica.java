@@ -7,7 +7,9 @@ import Vecindades.VecindadBoid;
 import Vecindades.VecindadObjetivos;
 import core.AgenteMovil;
 import core.AmbienteMovil;
+import core.Util;
 import core.Vector;
+import lombok.Getter;
 import tiposagentes.Boid;
 import tiposagentes.Objetivo;
 
@@ -30,6 +32,8 @@ public class Metrica {
     private double calidad = 0.0;
     private double funcionObjetivo = 0.0;
     private double seguimiento = 0.0;
+    @Getter
+    private int cantAgentesEnColision;
 
     public double getPenalEnPolarizacion() {
         return penalEnPolarizacion;
@@ -72,7 +76,6 @@ public class Metrica {
         double pesoSubsistema = 0.0;
 
         double totalAgentes = boids.size();
-        double cantObjetivos = objetivos.size();
         calcularConjuntosDeAgentes();
         determinarColisiones();
 
@@ -84,8 +87,8 @@ public class Metrica {
             int dimension = t.getPosicion().getDimension();
             Vector promedioDireccion = new Vector(dimension);
             Vector promedioPosicion = new Vector(dimension);// centro del
-                                                            // conjunto de
-                                                            // agentes
+            // conjunto de
+            // agentes
 
             // Calculando promedios de direccion y posicion
             for (Boid a : agentes) {
@@ -94,8 +97,8 @@ public class Metrica {
             }
 
             if (cantAgentes > 0) {
-                promedioDireccion.multiplicarEscalar(1.0 / cantAgentes);
-                promedioPosicion.multiplicarEscalar(1.0 / cantAgentes);
+                promedioDireccion.multiplicarEscalar(1d / cantAgentes);
+                promedioPosicion.multiplicarEscalar(1d / cantAgentes);
             }
 
             /////////////////////// fin calculo promedios////////////
@@ -112,13 +115,13 @@ public class Metrica {
 
             double menorDistancia = Double.POSITIVE_INFINITY;
             int cantAgentesSinColision = 0;
-            int cantAgentesEnColision = 0;
+            cantAgentesEnColision = 0;
 
             for (Boid a : agentes) {
                 Vector diferencia = promedioPosicion.clonar();
                 diferencia.restar(a.getPosicion());
                 double normaDiferencia = diferencia.norma();
-                double angulo = anguloEntreVectores(a.getVelocidad(), promedioDireccion);
+                double angulo = Util.anguloEntreVectores(a.getVelocidad(), promedioDireccion);
                 double distAgenteObjetivo = a.getPosicion().distancia(t.getPosicion());
 
                 if (distAgenteObjetivo < menorDistancia) {
@@ -127,23 +130,20 @@ public class Metrica {
 
                 extension = extension + normaDiferencia;
                 polarizacion = polarizacion + angulo;
-                factorColisiones = factorColisiones + factorColisiones(a);
+                if (a.isEnEstadoColision()) {
+                    factorColisiones++;
+                    cantAgentesEnColision++;
+                }
                 funcionObjetivo = funcionObjetivo + a.getValorFuncionObjetivo();
 
-                if (a.getHaColisionado() == false) {
+                if (!a.isHaColisionado()) {
                     cantAgentesSinColision++;
-
                     consExtension = consExtension + normaDiferencia;
                     consPolarizacion = consPolarizacion + angulo;
                 }
-
-                if (a.isEnEstadoColision()) {
-                    cantAgentesEnColision++;
-                }
-
             }
 
-            if (cantAgentes == 0.0) {
+            if (cantAgentes == 0) {
                 polarizacion = 0;
                 extension = 0;
                 factorColisiones = 0;
@@ -153,12 +153,10 @@ public class Metrica {
                 extension = extension / cantAgentes;
                 factorColisiones = factorColisiones / cantAgentes;
                 funcionObjetivo = funcionObjetivo / cantAgentes;
-
             }
 
-            if (cantAgentesSinColision == 0)// si todos los agentes ya han
-                                            // colisionado
-            {
+            if (cantAgentesSinColision == 0) {
+                // si todos los agentes ya han colisionado
                 consExtension = 0.0;
                 consPolarizacion = 0.0;
             } else {
@@ -177,11 +175,8 @@ public class Metrica {
             extensionPromedio += extension * pesoSubsistema;
             factorColisionesPromedio += factorColisiones * pesoSubsistema;
             consExtPromedio += consExtension * pesoSubsistema;
-            ;
             consPolPromedio += consPolarizacion * pesoSubsistema;
-            ;
             funcionObjetivoPromedio += funcionObjetivo * pesoSubsistema;
-            ;
         }
 
         this.polarizacion = polarizacionPromedio;
@@ -192,43 +187,6 @@ public class Metrica {
         this.calidad = 0.5 * (this.consExtension + this.consPolarizacion);
         this.funcionObjetivo = funcionObjetivoPromedio;
 
-    }
-
-    private double factorColisiones(Boid b)// retorna 1 si el agente est�
-                                           // colisionando
-    {
-        if (b.isEnEstadoColision())
-            return 1;
-        return 0;
-    }
-
-    public static double anguloEntreVectores(Vector A, Vector B) {
-        if (A.equals(B)) {
-            return 0;
-        }
-
-        double normaA = A.norma();
-        double normaB = B.norma();
-        double temp = 0.0;
-
-        if (normaA == 0.0 || normaB == 0.0) {
-            return 0.0;
-        }
-
-        double productoPunto = A.productoPunto(B);
-
-        float dotProduct = new Double(productoPunto).floatValue();
-        float div = new Double(normaA * normaB).floatValue();
-
-        double a = dotProduct / (div);
-
-        temp = a;
-        temp = temp + a;
-        a = temp - a; // trato de eliminar algunos errores de redondeo
-
-        double rad = Math.acos(a);
-
-        return Math.toDegrees(rad);
     }
 
     private VecindadObjetivos extraerObjetivos(VecindadBoid boids2) {
@@ -283,16 +241,15 @@ public class Metrica {
         }
     }
 
-    private void determinarColisiones() {
+    public void determinarColisiones() {
         AgenteMovil a, b = null;
 
         int size = agentes.size();
         for (int i = 0; i < size; i++) {
+            a = agentes.get(i);
             for (int j = 0; j < size; j++) {
                 if (i == j)
                     continue;
-
-                a = agentes.get(i);
                 b = agentes.get(j);
 
                 if (estanColisionando(a, b)) {
@@ -317,20 +274,15 @@ public class Metrica {
         }
     }
 
-    private boolean estanColisionando(AgenteMovil a, AgenteMovil b) {
+    public boolean estanColisionando(AgenteMovil a, AgenteMovil b) {
         double distanciaDeColision = a.getRadio() + b.getRadio();
         double distanciaAgentes = distancia(a, b);
 
-        if (distanciaDeColision >= distanciaAgentes)
-            return true;
-
-        return false;
+        return (distanciaDeColision >= distanciaAgentes);
     }
 
     private double distancia(AgenteMovil a, AgenteMovil b) {
-        Vector posa = a.getPosicion();
-        Vector posb = b.getPosicion();
-        return posa.distancia(posb);
+        return a.getPosicion().distancia(b.getPosicion());
     }
 
     public static void pruebaMetricas() {
@@ -381,61 +333,6 @@ public class Metrica {
         m.setPenalEnPolarizacion(penalPolarizacion);
 
         m.calcularMetricas();
-
-        /*
-         * VecindadBoid agentes = new VecindadBoid();
-         * agentes.add(boid4);
-         * agentes.add(boid3);
-         * agentes.add(boid2);
-         * agentes.add(boid1);
-         * for(AgenteMovil a:agentes)
-         * {
-         * if(a instanceof Boid)
-         * {
-         * Boid b = (Boid)a;
-         * System.out.println();
-         * System.out.println("Agente "+ b);
-         * System.out.println("Ha colisionado "+b.getHaColisionado());
-         * System.out.println("Estado colision "+ b.isEnEstadoColision());
-         * }
-         * }
-         */
-
-    }
-
-    public static void pruebaDeterminarColisiones() {
-        double radio = 3;
-        AmbienteMovil ambiente = new AmbienteMovil();
-
-        ArrayList<AgenteMovil> agentes = new ArrayList<AgenteMovil>();
-        agentes.add(new Boid(0, 0, ambiente));
-        agentes.add(new Boid(0, 0, ambiente));
-        agentes.add(new Boid(0, 0, ambiente));
-        agentes.add(new Boid(16, 0, ambiente));
-        agentes.add(new Boid(6.1, 0, ambiente));
-
-        for (AgenteMovil a : agentes) {
-            a.setRadio(radio);
-            ambiente.agregarAgente(a);
-        }
-
-        Metrica m = new Metrica(ambiente);
-        m.determinarColisiones();
-
-        for (AgenteMovil a : agentes) {
-            if (a instanceof Boid) {
-                Boid b = (Boid) a;
-
-                /*
-                 * System.out.println();
-                 * System.out.println("Agente "+ b);
-                 * System.out.println("Ha colisionado "+b.getHaColisionado());
-                 * System.out.println("Estado colision "+
-                 * b.isEnEstadoColision());
-                 */
-            }
-        }
-
     }
 
     public static void pruebaObtenerConjuntos() {
@@ -497,13 +394,11 @@ public class Metrica {
     }
 
     public static void main(String ar[]) {
-        // Metrica.pruebaMetricas();
-
         Vector A = new Vector(3.407953946628199, 3.658667776344455);
 
         Vector B = new Vector(0.6815907893256399, 0.7317335552688911);
 
-        Metrica.anguloEntreVectores(A, B);
+        Util.anguloEntreVectores(A, B);
     }
 
     public double getPolarizacion() {

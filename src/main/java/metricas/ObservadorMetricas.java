@@ -1,5 +1,6 @@
 package metricas;
 
+import lombok.Getter;
 import org.jfree.data.xy.XYDataItem;
 import org.jfree.data.xy.XYSeries;
 
@@ -19,7 +20,8 @@ public class ObservadorMetricas implements ObservadorAmbiente {
     private double sumFuncionObjetivo = 0.0;
     private boolean promedioAgregado = false;
 
-    private XYSeries polarizacion, extension, factorColision, consPolarizacion, consExtension, calidad, funcionObjetivo;
+    @Getter
+    private XYSeries polarizacion, extension, factorColision, consPolarizacion, consExtension, calidad, funcionObjetivo, colisiones;
 
     private Grafica gPolarizacion;
     private Grafica gExtension;
@@ -40,10 +42,11 @@ public class ObservadorMetricas implements ObservadorAmbiente {
         polarizacion = new XYSeries("Polarización");
         extension = new XYSeries("Extensión");
         factorColision = new XYSeries("Colisiones");
-        consExtension = new XYSeries(" Consistencia extensión");
-        consPolarizacion = new XYSeries(" Consistencia polarización");
+        consExtension = new XYSeries(" Consistencia-Extensión");
+        consPolarizacion = new XYSeries(" Consistencia-Polarización");
         calidad = new XYSeries("Calidad");
-        funcionObjetivo = new XYSeries("Función objetivo");
+        funcionObjetivo = new XYSeries("Función-Objetivo");
+        colisiones = new XYSeries("Coliciones");
 
         paramMaxExt = maximaExtension;
         paramMaxPol = maxPolarizacion;
@@ -51,10 +54,8 @@ public class ObservadorMetricas implements ObservadorAmbiente {
 
     @Override
     public void observarAmbiente(AmbienteMovil ambiente) {
-
         if (metricas != null) {
             iteraciones++;
-
             metricas.calcularMetricas();
 
             sumPolarizacion += metricas.getPolarizacion();
@@ -72,8 +73,8 @@ public class ObservadorMetricas implements ObservadorAmbiente {
             consPolarizacion.add(iteraciones, metricas.getConsPolarizacion());
             calidad.add(iteraciones, metricas.getCalidad());
             funcionObjetivo.add(iteraciones, metricas.getFuncionObjetivo());
+            colisiones.add(iteraciones, Integer.valueOf(metricas.getCantAgentesEnColision()));
         } else {
-
             iniciar(ambiente);
         }
 
@@ -81,7 +82,6 @@ public class ObservadorMetricas implements ObservadorAmbiente {
 
     public void addPromedios() {
         if (iteraciones > 0) {
-
             this.promedioAgregado = true;
             polarizacion.add(iteraciones + 1, sumPolarizacion / iteraciones);
             extension.add(iteraciones + 1, sumExtension / iteraciones);
@@ -215,30 +215,6 @@ public class ObservadorMetricas implements ObservadorAmbiente {
 
             System.out.println("X " + t.getXValue() + " Y " + t.getYValue());
         }
-    }
-
-    public XYSeries getPolarizacion() {
-        return polarizacion;
-    }
-
-    public XYSeries getExtension() {
-        return extension;
-    }
-
-    public XYSeries getFactorColision() {
-        return factorColision;
-    }
-
-    public XYSeries getConsPolarizacion() {
-        return consPolarizacion;
-    }
-
-    public XYSeries getConsExtension() {
-        return consExtension;
-    }
-
-    public XYSeries getCalidad() {
-        return calidad;
     }
 
     public boolean isPromedioAgregado() {
