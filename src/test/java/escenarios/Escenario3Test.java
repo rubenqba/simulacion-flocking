@@ -8,10 +8,14 @@ import static org.hamcrest.Matchers.notNullValue;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.*;
 
 import implementacion.TipoMovimiento;
+import lombok.Builder;
+import lombok.Getter;
 import org.apache.commons.lang3.time.StopWatch;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -28,46 +32,56 @@ import metricas.ObservadorVariablesEstado;
 
 public class Escenario3Test {
 
+    @AllArgsConstructor
+    private class Parameters {
+        @Getter
+        private double c1, c2, c3Min, c3Max;
+    }
+
+    private List<Parameters> params;
+    private List<Integer> cantidadAgentes;
+
+    @Before
+    public void setup() {
+        params = Arrays.asList(
+                new Parameters(-0.9, 0.2, -0.1, -0.1),
+                new Parameters(-0.8, 0.2, -0.1, 0.1),
+                new Parameters(-0.7, 0.2, -0.1, 0.3),
+                new Parameters(-0.6, 0.2, -0.1, 0.5),
+                new Parameters(-0.5, 0.2, -0.1, 0.7),
+                new Parameters(-0.4, 0.2, -0.1, 0.9),
+                new Parameters(-0.3, 0.2, -0.1, 1.1),
+                new Parameters(-0.2, 0.2, -0.1, 1.3),
+                new Parameters(-0.1, 0.2, -0.1, 1.5),
+                new Parameters(0, 0.2, -0.1, 1.7),
+                new Parameters(0.1, 0.2, -0.1, 1.9),
+                new Parameters(0.2, 0.2, -0.1, 2.1),
+                new Parameters(0.3, 0.2, -0.1, 2.3),
+                new Parameters(0.4, 0.2, -0.1, 2.5),
+                new Parameters(0.5, 0.2, -0.1, 2.7),
+                new Parameters(0.6, 0.2, -0.1, 2.9),
+                new Parameters(0.7, 0.2, -0.1, 3.1),
+                new Parameters(0.8, 0.2, -0.1, 3.3),
+                new Parameters(0.9, 0.2, -0.1, 3.5)
+        );
+    }
+
     @Test
     public void testAurelio() throws InterruptedException {
-        List<Integer> cantidadAgentes = Arrays.asList(100, 150, 200, 250, 300, 350, 400, 450, 500);
-        List<Double> valoresC1 = Arrays.asList(-.9, -.8, -.7, -.6, -.5, -.4, -.3, -.2, -.1, 0d, .1, .2, .3, .4, .5, .6,
-                .7, .8, .9);
-        List<Double> valoresC3Max = Arrays.asList(.1, .3, .5, .7, .9, 1.1, 1.3, 1.5, 1.7, 1.9, 2.1, 2.3, 2.5, 2.7,
-                2.9, 3.1, 3.3, 3.5);
-        Double c2 = .2;
-        Double c3Min = -.1;
-
-        for (int j = 0; j < 10; j++) {
-            for (Integer agentes : cantidadAgentes) {
-                for (Double c1 : valoresC1) {
-                    new Experimento(agentes, c1, c2, c3Min, TipoMovimiento.MEJORADO, null).test();
-                    for (Double c3 : valoresC3Max) {
-                        new Experimento(agentes, c1, c2, c3, TipoMovimiento.MEJORADO, null).test();
-                    }
-                }
+        for (Integer agentes : cantidadAgentes) {
+            for (Parameters p : params) {
+                new Experimento(agentes, p.getC1(), p.getC2(), p.getC3Min(), TipoMovimiento.MEJORADO, null).test();
+                new Experimento(agentes, p.getC1(), p.getC2(), p.getC3Max(), TipoMovimiento.MEJORADO, null).test();
             }
         }
     }
 
     @Test
     public void testGustavo() throws InterruptedException, ExecutionException {
-        List<Integer> cantidadAgentes = Arrays.asList(100, 150, 200, 250, 300, 350, 400, 450, 500);
-        List<Double> valoresC1 = Arrays.asList(-.9, -.8, -.7, -.6, -.5, -.4, -.3, -.2, -.1, 0d, .1, .2, .3, .4, .5, .6,
-                .7, .8, .9);
-        List<Double> valoresC3Max = Arrays.asList(.1, .3, .5, .7, .9, 1.1, 1.3, 1.5, 1.7, 1.9, 2.1, 2.3, 2.5, 2.7,
-                2.9, 3.1, 3.3, 3.5);
-        Double c2 = .2;
-        Double c3Min = -.1;
-
-        for (int j = 0; j < 10; j++) {
-            for (Integer agentes : cantidadAgentes) {
-                for (Double c1 : valoresC1) {
-                    new Experimento(agentes, c1, c2, c3Min, TipoMovimiento.INTEGRAL, new Object[]{0.01d}).test();
-                    for (Double c3 : valoresC3Max) {
-                        new Experimento(agentes, c1, c2, c3, TipoMovimiento.INTEGRAL, new Object[]{0.01d}).test();
-                    }
-                }
+        for (Integer agentes : cantidadAgentes) {
+            for (Parameters p : params) {
+                new Experimento(agentes, p.getC1(), p.getC2(), p.getC3Min(), TipoMovimiento.INTEGRAL, new Object[]{0.01d}).test();
+                new Experimento(agentes, p.getC1(), p.getC2(), p.getC3Max(), TipoMovimiento.INTEGRAL, new Object[]{0.01d}).test();
             }
         }
     }
@@ -75,7 +89,6 @@ public class Escenario3Test {
     @Test
     public void testManualSingle() throws InterruptedException, ExecutionException {
         new Experimento(400, .1, .2, .2, TipoMovimiento.MEJORADO, new Object[]{0.01d}).test();
-//        new Experimento(500, -.9, .2, -.1, TipoMovimiento.INTEGRAL, new Object[]{0.01d}).test();
     }
 
     @AllArgsConstructor
