@@ -64,6 +64,8 @@ public class Escenario3Test {
                 new Parameters(0.8, 0.2, -0.1, 3.3),
                 new Parameters(0.9, 0.2, -0.1, 3.5)
         );
+
+        cantidadAgentes = Arrays.asList(100, 150, 200, 250, 300, 350, 400, 450, 500);
     }
 
     @Test
