@@ -7,19 +7,11 @@ import core.Vector;
 
 public class MovimientoCuatroEsquinas implements Movimiento {
 
-    private Vector esquinaSupIzq = new Vector(new double[] {
-            100, 100
-    });
-    private Vector esquinaSupDer = new Vector(new double[] {
-            AmbienteMovil.tamx - 100, 100
-    });
-    private Vector esquinaInfIzq = new Vector(new double[] {
-            100, AmbienteMovil.tamy - 100
-    });
-    private Vector esquinaInfDer = new Vector(new double[] {
-            AmbienteMovil.tamx - 100, AmbienteMovil.tamy - 100
-    });
-    private Vector direccion = esquinaSupIzq;
+    protected Vector esquinaSupIzq = new Vector(100, 100);
+    protected Vector esquinaSupDer = new Vector(AmbienteMovil.tamx - 100, 100);
+    protected Vector esquinaInfIzq = new Vector(100, AmbienteMovil.tamy - 100);
+    protected Vector esquinaInfDer = new Vector(AmbienteMovil.tamx - 100, AmbienteMovil.tamy - 100);
+    protected Vector direccion = esquinaSupIzq;
 
     public double getVelMax() {
         return velMax;
@@ -39,10 +31,9 @@ public class MovimientoCuatroEsquinas implements Movimiento {
         agente.setPosicion(posicion);
     }
 
-    private Vector calcularVelocidad(AgenteMovil agente) {
+    protected Vector calcularVelocidad(AgenteMovil agente) {
 
         Vector posicion = agente.getPosicion();
-
         if (posicion.equals(esquinaSupIzq))
             direccion = esquinaSupDer;
         if (posicion.equals(esquinaSupDer))
@@ -60,7 +51,7 @@ public class MovimientoCuatroEsquinas implements Movimiento {
         return vel;
     }
 
-    private void validarVelocidad(Vector velocidad, AgenteMovil agente) {
+    protected void validarVelocidad(Vector velocidad, AgenteMovil agente) {
         double vel = velocidad.norma();
 
         if (vel > velMax) {

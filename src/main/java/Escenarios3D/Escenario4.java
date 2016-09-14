@@ -16,7 +16,7 @@ public class Escenario4 {
 	
 	public static void main(String ar[])
 	{
-		/**par‡metros de los agentes**/
+		/**par√°metros de los agentes**/
 		double radioAgente = 1;
 		double radioObjetivos = 2;
 		double rangoDeInteraccion =10;

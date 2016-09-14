@@ -1,67 +1,48 @@
 package Reporte;
 
-import java.awt.Dimension;
+import java.awt.*;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.ApplicationFrame;
 
 public class Grafica extends ApplicationFrame {
 
-    private XYSeriesCollection coleccion;
-    private String ejeX = "Eje x";
-    private String ejeY = "Eje y";
+    private XYSeriesCollection series;
+    private String nameX = "x";
+    private String nameY = "y";
 
-    public Grafica() {
-        super("Gráfica");
-        iniciar();
-    }
-
-    public Grafica(String nombre) {
+    public Grafica(String nombre, String nameX, String nameY) {
         super(nombre);
-        iniciar();
+        this.nameX = nameX;
+        this.nameY = nameY;
+        series = new XYSeriesCollection();
     }
 
-    public void agregarPuntos(XYSeries puntos) {
-        coleccion.addSeries(puntos);
-    }
-
-    private void iniciar() {
-        coleccion = new XYSeriesCollection();
+    public void agregarSerie(XYSeries serie) {
+        series.addSeries(serie);
     }
 
     public void crearReporte() {
-        JFreeChart chart = ChartFactory.createXYLineChart(this.getName(), getEjeX(), getEjeY(), coleccion,
+        JFreeChart chart = ChartFactory.createXYLineChart(this.getTitle(), nameX, nameY, series,
                 PlotOrientation.VERTICAL, true, true, true);
+
+        XYPlot plot = chart.getXYPlot();
+        for (int i = 0; i < plot.getSeriesCount(); i++) {
+            plot.getRenderer().setSeriesStroke(i, new BasicStroke(2));
+        }
+
         ChartPanel chartpanel = new ChartPanel(chart);
-        chartpanel.setPreferredSize(new Dimension(360, 500));
+        chartpanel.setPreferredSize(new Dimension(600, 800));
 
         setContentPane(chartpanel);
-        setSize(500, 300);
+        setSize(800, 600);
         setVisible(true);
     }
 
-    public void actualizar() {
-        this.repaint();
-    }
-
-    public String getEjeX() {
-        return ejeX;
-    }
-
-    public void setEjeX(String ejeX) {
-        this.ejeX = ejeX;
-    }
-
-    public String getEjeY() {
-        return ejeY;
-    }
-
-    public void setEjeY(String ejeY) {
-        this.ejeY = ejeY;
-    }
 }

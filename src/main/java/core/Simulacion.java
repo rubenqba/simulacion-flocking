@@ -3,6 +3,7 @@ package core;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observer;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -25,7 +26,7 @@ public class Simulacion extends JFrame implements Runnable {
     private boolean habilitarPintado = true;
     private boolean simulacion3D = false;
     private List<ObservadorAmbiente> observadores;
-    Grafico graph;
+    private Grafico graph;
 
     public AmbienteMovil getAmbiente() {
         return ambiente;
@@ -39,6 +40,13 @@ public class Simulacion extends JFrame implements Runnable {
         this.ambiente = ambiente;
         observadores = new ArrayList<ObservadorAmbiente>();
 
+        habilitarGraficos3D(ambiente);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(AmbienteMovil.tamx, AmbienteMovil.tamy);
+        setVisible(true);
+    }
+
+    protected void initGraphics() {
         habilitarGraficos3D(ambiente);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(AmbienteMovil.tamx, AmbienteMovil.tamy);
@@ -61,26 +69,23 @@ public class Simulacion extends JFrame implements Runnable {
     @Override
     public void run() {
         int tiempo = 0;
-//        StopWatch w = new StopWatch();
+        simulacionActiva = true;
+        if (habilitarPintado)
+            initGraphics();
         try {
-//            w.start();
             while (tiempo <= iteraciones && simulacionActiva) {
 
                 if (delaySimulacion > 0)
                     Thread.sleep(delaySimulacion);
-//                if(w.isSuspended())
-//                    w.resume();
                 actuar();
                 notificarObservadores();
-//                w.split();
-//                System.out.println(String.format("it(%d): %s", tiempo, w.toSplitString()));
-//                w.suspend();
-                if (habilitarPintado)
-                    repaint();
                 tiempo++;
+                if (habilitarPintado) {
+                    repaint();
+                    setTitle(String.format("iteración %d de %d", tiempo, iteraciones));
+                }
+
             }
-//            w.stop();
-//            System.out.println(String.format("Time: %dms", w.getTime()));
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, e.getMessage());
@@ -89,13 +94,9 @@ public class Simulacion extends JFrame implements Runnable {
     }
 
     protected void actuar() {
-//        StopWatch w = new StopWatch();
-//        w.start();
         for (AgenteMovil agente : ambiente.getAgentes()) {
             agente.actuar();
         }
-//        w.stop();
-//        System.out.println(String.format("actuar: %dms", w.getTime()));
     }
 
     @Override

@@ -114,37 +114,21 @@ public class ObservadorMetricas implements ObservadorAmbiente {
     public void mostrarReportes() {
         eliminarPromedio();
 
-        gPolarizacion = new Grafica("Polarización");
-        gExtension = new Grafica("Extensión");
-        gFactorColision = new Grafica("Factor Colisiones");
-        gConsExtension = new Grafica("Consistencia en la Extensión");
-        gConsPolarizacion = new Grafica("Consistencia en la Polarización");
-        gCalidad = new Grafica("Calidad");
-        gFuncionObjetivo = new Grafica("función objetivo");
+        gPolarizacion = new Grafica("Polarización", "Iteraciones", "Polarización");
+        gExtension = new Grafica("Extensión", "Iteraciones", "Extensión");
+        gFactorColision = new Grafica("Factor Colisiones", "Iteraciones", "FactorColisión");
+        gConsExtension = new Grafica("Consistencia en la Extensión", "Iteraciones", "Consistencia Extension");
+        gConsPolarizacion = new Grafica("Consistencia en la Polarización", "Iteraciones", "Consistencia Polarización");
+        gCalidad = new Grafica("Calidad", "Iteraciones", "Calidad");
+        gFuncionObjetivo = new Grafica("función objetivo", "Iteraciones", "Función objetivo");
 
-        gPolarizacion.setEjeX("Iteraciones");
-        gExtension.setEjeX("Iteraciones");
-        gFactorColision.setEjeX("Iteraciones");
-        gConsExtension.setEjeX("Iteraciones");
-        gConsPolarizacion.setEjeX("Iteraciones");
-        gCalidad.setEjeX("iteraciones");
-        gFuncionObjetivo.setEjeX("Iteraciones");
-
-        gPolarizacion.setEjeY("Polarización");
-        gExtension.setEjeY("Extensión");
-        gFactorColision.setEjeY("FactorColisión");
-        gConsExtension.setEjeY("Consistencia Extension");
-        gConsPolarizacion.setEjeY("Consistencia Polarización");
-        gCalidad.setEjeY("Calidad");
-        gFuncionObjetivo.setEjeY("Función objetivo");
-
-        gPolarizacion.agregarPuntos(polarizacion);
-        gExtension.agregarPuntos(extension);
-        gFactorColision.agregarPuntos(factorColision);
-        gConsExtension.agregarPuntos(consExtension);
-        gConsPolarizacion.agregarPuntos(consPolarizacion);
-        gCalidad.agregarPuntos(calidad);
-        gFuncionObjetivo.agregarPuntos(funcionObjetivo);
+        gPolarizacion.agregarSerie(polarizacion);
+        gExtension.agregarSerie(extension);
+        gFactorColision.agregarSerie(factorColision);
+        gConsExtension.agregarSerie(consExtension);
+        gConsPolarizacion.agregarSerie(consPolarizacion);
+        gCalidad.agregarSerie(calidad);
+        gFuncionObjetivo.agregarSerie(funcionObjetivo);
 
         gPolarizacion.crearReporte();
         gExtension.crearReporte();
@@ -175,23 +159,17 @@ public class ObservadorMetricas implements ObservadorAmbiente {
     public void mostrarReportesCortos() {
         eliminarPromedio();
 
-        Grafica graf1 = new Grafica("Métricas");
-        Grafica graf2 = new Grafica("Métricas");
+        Grafica graf1 = new Grafica("Métricas", "Iteraciones", "Métricas");
+        Grafica graf2 = new Grafica("Métricas", "Iteraciones", "Métricas");
 
-        graf1.setEjeX("Iteraciones");
-        graf2.setEjeX("Iteraciones");
+        graf1.agregarSerie(polarizacion);
+        graf1.agregarSerie(extension);
+        graf1.agregarSerie(funcionObjetivo);
 
-        graf1.setEjeY("Métricas");
-        graf2.setEjeY("Métricas");
-
-        graf1.agregarPuntos(polarizacion);
-        graf1.agregarPuntos(extension);
-        graf1.agregarPuntos(funcionObjetivo);
-
-        graf2.agregarPuntos(consPolarizacion);
-        graf2.agregarPuntos(consExtension);
-        graf2.agregarPuntos(factorColision);
-        graf2.agregarPuntos(calidad);
+        graf2.agregarSerie(consPolarizacion);
+        graf2.agregarSerie(consExtension);
+        graf2.agregarSerie(factorColision);
+        graf2.agregarSerie(calidad);
 
         graf1.crearReporte();
         graf2.crearReporte();
