@@ -1,10 +1,13 @@
 package metricas;
 
 import core.AmbienteMovil;
+import reportes.IReportFile;
 
-public interface ObservadorAmbiente {
-    public String getName();
+import java.io.FileOutputStream;
+import java.io.IOException;
 
-    public void observarAmbiente(AmbienteMovil ambiente);
+public interface ObservadorAmbiente extends IReportFile {
+    String getName();
 
+    void observarAmbiente(AmbienteMovil ambiente);
 }

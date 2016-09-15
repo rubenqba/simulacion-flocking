@@ -1,10 +1,18 @@
 package metricas;
 
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import core.AgenteMovil;
 import core.AmbienteMovil;
 import core.Vector;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
 import tiposagentes.Boid;
 
 public class ObservadorVariablesEstado implements ObservadorAmbiente {
@@ -21,6 +29,31 @@ public class ObservadorVariablesEstado implements ObservadorAmbiente {
         } else {
             sensarAgente(ambiente.getAgentes().get(indiceAgenteObservado));
         }
+    }
+
+    @Override
+    public void saveToFile(FileOutputStream out) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out));
+        StringBuffer s = new StringBuffer();
+        s.append("[");
+        s.append(StringUtils.join(datos.stream()
+                .map(array -> {
+                    StringBuffer buffer = new StringBuffer();
+                    buffer.append("[");
+                    buffer.append(StringUtils.join(Arrays.stream(array).mapToObj(d -> String.format("%1.4f", d))
+                            .collect(Collectors.toList()), ", "));
+                    buffer.append("]");
+                    return buffer.toString();
+                })
+                .collect(Collectors.toList()), "; "));
+        s.append("]");
+        writer.newLine();
+        writer.write(String.format("Variables de estado (%s)%n", WordUtils.capitalize(getName())));
+        writer.write("====================================\n");
+        writer.write(s.toString());
+        writer.newLine();
+        writer.write("====================================\n");
+        writer.flush();
     }
 
     private void iniciar(AmbienteMovil ambiente) {

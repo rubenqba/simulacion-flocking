@@ -4,6 +4,9 @@ import core.AgenteMovil;
 import core.AmbienteMovil;
 import tiposagentes.Boid;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 public class ObservadorEstadoAmbiente implements ObservadorAmbiente {
 
     @Override
@@ -28,4 +31,8 @@ public class ObservadorEstadoAmbiente implements ObservadorAmbiente {
         return "ambiente";
     }
 
+    @Override
+    public void saveToFile(FileOutputStream out) throws IOException {
+
+    }
 }

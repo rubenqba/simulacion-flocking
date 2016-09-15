@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +31,7 @@ import lombok.AllArgsConstructor;
 import metricas.ObservadorAmbiente;
 import metricas.ObservadorMetricas;
 import metricas.ObservadorVariablesEstado;
+import reportes.FileManager;
 
 public class Escenario3Test {
 
@@ -91,7 +93,7 @@ public class Escenario3Test {
 
     @Test
     public void testManualSingle() throws InterruptedException, ExecutionException {
-        new Experimento(true, 400, .1, .2, .2, TipoMovimiento.MEJORADO, new Object[]{0.01d}).test();
+        new Experimento(false, 400, .1, .2, .2, TipoMovimiento.MEJORADO, new Object[]{0.01d}).test();
     }
 
     @AllArgsConstructor
@@ -143,9 +145,9 @@ public class Escenario3Test {
                             .c2(c2)
                             .c3(c3)
                             .zonaVirtual(15)
-                            .parametroObstaculos(1)
+                            .obstaculos(1)
                             .velMax(4)
-                            .maximaExtension(610)
+                            .maxExtension(610)
                             .maxPolarizacion(180)
                             .build())
                     .ambiente(new AmbienteMovil())
@@ -195,15 +197,19 @@ public class Escenario3Test {
             System.out.println(String.format("; time=%d seg", TimeUnit.MILLISECONDS.toSeconds(watch.getTime())));
 
             if (e.isGuardarMetricasArchivo()) {
-                ManejadorArchivos manejador = new ManejadorArchivos();
-                for (ObservadorAmbiente observer : s.getObservadores()) {
-                    if (ObservadorMetricas.class.isAssignableFrom(observer.getClass())) {
-                        manejador.guardarEnArchivo(name, e.getConfiguracionAgente().getAsMap(),
-                                e.getConfiguracionModelo().getAsMap(), (ObservadorMetricas) observer);
-                    } else if (ObservadorVariablesEstado.class.isAssignableFrom(observer.getClass())) {
-                        manejador.guardarEnArchivo(name, e.getConfiguracionAgente().getAsMap(),
-                                e.getConfiguracionModelo().getAsMap(), (ObservadorVariablesEstado) observer);
+                try {
+                    FileOutputStream report = new FileOutputStream(FileManager.crearArchivo(name, "metricas"));
+
+                    e.getConfiguracionModelo().saveToFile(report);
+                    report.flush();
+                    e.getConfiguracionAgente().saveToFile(report);
+                    report.flush();
+                    for (ObservadorAmbiente observer : s.getObservadores()) {
+                        observer.saveToFile(report);
+                        report.flush();
                     }
+                } catch (IOException ex) {
+                    System.err.println("No se pudo crear archivo: " + ex.getLocalizedMessage());
                 }
             }
             if (e.isMostrarSimulacion()) {

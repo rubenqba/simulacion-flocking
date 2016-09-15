@@ -21,7 +21,7 @@ public class ObservadorMejorAgente extends ObservadorVariablesEstado {
 
     @Override
     public String getName() {
-        return "mejor_agente";
+        return "mejor agente";
     }
 
 }

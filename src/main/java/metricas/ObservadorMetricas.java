@@ -4,8 +4,15 @@ import lombok.Getter;
 import org.jfree.data.xy.XYDataItem;
 import org.jfree.data.xy.XYSeries;
 
-import Reporte.Grafica;
+import reportes.Grafica;
 import core.AmbienteMovil;
+
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 public class ObservadorMetricas implements ObservadorAmbiente {
 
@@ -18,6 +25,7 @@ public class ObservadorMetricas implements ObservadorAmbiente {
     private double sumFactorColisiones = 0.0;
     private double sumCalidad = 0.0;
     private double sumFuncionObjetivo = 0.0;
+    private int sumColisiones = 0;
     private boolean promedioAgregado = false;
 
     @Getter
@@ -65,6 +73,7 @@ public class ObservadorMetricas implements ObservadorAmbiente {
             sumFactorColisiones += metricas.getFactorColisiones();
             sumCalidad += metricas.getCalidad();
             sumFuncionObjetivo += metricas.getFuncionObjetivo();
+            sumColisiones += metricas.getCantAgentesEnColision();
 
             polarizacion.add(iteraciones, metricas.getPolarizacion());
             extension.add(iteraciones, metricas.getExtension());
@@ -204,4 +213,35 @@ public class ObservadorMetricas implements ObservadorAmbiente {
         return "metricas";
     }
 
+    @Override
+    public void saveToFile(FileOutputStream out) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out));
+        writer.newLine();
+        writer.write("Métricas de ejecución\n");
+        writer.write("====================================\n");
+        int iterations = polarizacion.getItemCount();
+        writer.write(String.format("%-18s: %4d%n", "Cant. Iteraciones", iterations));
+        writer.write(String.format("%-18s: %4.4f%n", "Avg. Extensión", sumExtension / iterations));
+        writer.write(String.format("%-18s: %4.4f%n", "Avg. Polarización", sumPolarizacion / iterations));
+        writer.write(String.format("%-18s: %4d%n", "Cant. Colisiones", sumColisiones));
+        writer.write(String.format("%-18s: %4.4f%n", "Avg. Factor Col.", sumFactorColisiones / iterations));
+        writer.write(String.format("%-18s: %4.4f%n", "Avg. Cons. Extensión", sumConsExtension / iterations));
+        writer.write(String.format("%-18s: %4.4f%n", "Avg. Cons. Polarización", sumConsPolarizacion / iterations));
+        writer.write(String.format("%-18s: %4.4f%n", "Avg. Calidad", sumCalidad / iterations));
+        writer.newLine();
+
+        writer.write(String.format("%9s\t%9s\t%12s\t%10s\t%15s\t%20s\t%25s\t%8s",
+                "Iteracion", "Extension", "Polarizacion", "Colisiones", "Factor-Colision", "Consistencia-Extension",
+                "Consistencia-Polarizacion", "Calidad"));
+        writer.newLine();
+
+        for (int ind = 0; ind < extension.getItemCount(); ind++) {
+            writer.write(String.format("%9d\t%9.4f\t%12.4f\t%10d\t%15.4f\t%20.4f\t%25.4f\t%8.4f", ind, extension.getY(ind).doubleValue(),
+                    polarizacion.getY(ind).doubleValue(), colisiones.getY(ind), factorColision.getY(ind).doubleValue(),
+                    consExtension.getY(ind).doubleValue(), consPolarizacion.getY(ind), calidad.getY(ind)));
+            writer.newLine();
+        }
+        writer.write("====================================\n");
+        writer.flush();
+    }
 }

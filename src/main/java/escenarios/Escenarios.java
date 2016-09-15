@@ -1,5 +1,9 @@
 package escenarios;
 
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -22,6 +26,7 @@ import metricas.ObservadorMetricas;
 import metricas.ObservadorObjetivo;
 import metricas.ObservadorVariablesEstado;
 import metricas.ObservadorVelocidad;
+import reportes.IReportFile;
 import tiposagentes.Boid;
 import tiposagentes.Objetivo;
 
@@ -43,7 +48,7 @@ public class Escenarios {
     public List<ObservadorAmbiente> getObservadores() {
         List<ObservadorAmbiente> observadores = new ArrayList<>();
         if (calcularMetricas) {
-            ObservadorMetricas o = new ObservadorMetricas(getConfiguracionModelo().getMaximaExtension(),
+            ObservadorMetricas o = new ObservadorMetricas(getConfiguracionModelo().getMaxExtension(),
                     getConfiguracionModelo().getMaxPolarizacion());
             o.addPromedios();
             observadores.add(o);
@@ -61,53 +66,62 @@ public class Escenarios {
 
 @Builder
 @Getter
-class ConfiguracionAgente {
+class ConfiguracionAgente implements IReportFile {
     /** parámetros de los agentes **/
     private double cantidadObjetivos = 1;
     private double radioAgente = 3;
     private double rangoDeInteraccion = 25;
     private double radioObstaculos = 20;
     private double cantidadAgentes = 300;
-
     private VecindadObjetivos vecindad;
 
-    public Map<String, Double> getAsMap() {
-        Map<String, Double> map = new LinkedHashMap<>();
-        map.put("cantidadObjetivos", cantidadObjetivos);
-        map.put("radioAgente", radioAgente);
-        map.put("rangoDeInteraccion", rangoDeInteraccion);
-        map.put("radioObstaculos", radioObstaculos);
-        map.put("cantidadAgentes", cantidadAgentes);
+    @Override
+    public void saveToFile(FileOutputStream out) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out));
 
-        return map;
+        writer.write("Parámetros de Agentes\n");
+        writer.write("====================================\n");
+        writer.write(String.format("%-21s: %s%n", "Cantidad de Objetivos", cantidadObjetivos));
+        writer.write(String.format("%-21s: %s%n", "Cantidad de Agentes", cantidadAgentes));
+        writer.write(String.format("%-21s: %s%n", "Radio de Agente", radioAgente));
+        writer.write(String.format("%-21s: %s%n", "Rango de Interacción", rangoDeInteraccion));
+        writer.write(String.format("%-21s: %s%n", "Radio de Obstaculos", radioObstaculos));
+        writer.write("====================================\n");
+        writer.newLine();
+        writer.flush();
     }
 }
 
 @Builder
 @Getter
-class ConfiguracionModelo {
-    private double parametroObstaculos = 1;
+class ConfiguracionModelo implements IReportFile {
+    private double obstaculos = 1;
     private double c1 = 0.01;
     private double c2 = 0.2;
     private double c3 = 0.2;
     private double velMax = 4;
     private double zonaVirtual = 15;// separacion
 
-    private double maximaExtension = 610;
+    private double maxExtension = 610;
     private double maxPolarizacion = 180;
 
-    public Map<String, Double> getAsMap() {
-        Map<String, Double> parametrosModelo = new LinkedHashMap<>();
-        parametrosModelo.put("parametroObstaculos", parametroObstaculos);
-        parametrosModelo.put("c1", c1);
-        parametrosModelo.put("c2", c2);
-        parametrosModelo.put("c3", c3);
-        parametrosModelo.put("velMax", velMax);
-        parametrosModelo.put("zonaVirtual", zonaVirtual);
-        parametrosModelo.put("MaxExt", maximaExtension);
-        parametrosModelo.put("MaxPol", maxPolarizacion);
+    @Override
+    public void saveToFile(FileOutputStream out) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out));
 
-        return parametrosModelo;
+        writer.write("Parámetros del Modelo\n");
+        writer.write("====================================\n");
+        writer.write(String.format("%-18s: %4.4f%n", "C1", c1));
+        writer.write(String.format("%-18s: %4.4f%n", "C2", c2));
+        writer.write(String.format("%-18s: %4.4f%n", "C3", c3));
+        writer.write(String.format("%-18s: %4.4f%n", "Velocidad Máx.", velMax));
+        writer.write(String.format("%-18s: %4.4f%n", "Zona virtual", zonaVirtual));
+        writer.write(String.format("%-18s: %4.4f%n", "Obstáculos", obstaculos));
+        writer.write(String.format("%-18s: %4.4f%n", "Extensión Máx.", maxExtension));
+        writer.write(String.format("%-18s: %4.4f%n", "Polarización Máx.", maxPolarizacion));
+        writer.write("====================================\n");
+        writer.newLine();
+        writer.flush();
     }
 
     public MovimientoBoidMejorado buildMovimientoBoidMejorado() {
@@ -115,7 +129,7 @@ class ConfiguracionModelo {
         mov.setC1(c1);
         mov.setC2(c2);
         mov.setC3(c3);
-        mov.setParametroObstaculos(parametroObstaculos);
+        mov.setParametroObstaculos(obstaculos);
         mov.setVelMax(velMax);
         mov.setZonaVirtual(zonaVirtual);
         return mov;
@@ -126,7 +140,7 @@ class ConfiguracionModelo {
         mov.setC1(c1);
         mov.setC2(c2);
         mov.setC3(c3);
-        mov.setParametroObstaculos(parametroObstaculos);
+        mov.setParametroObstaculos(obstaculos);
         mov.setVelMax(velMax);
         mov.setZonaVirtual(zonaVirtual);
         return mov;
