@@ -224,6 +224,9 @@ public class Escenario3Test {
                     e1.printStackTrace();
                 }
             }
+
+            String leftString = "abc", rigthString = "def";
+
         }
     }
 }

@@ -217,8 +217,10 @@ public class ObservadorMetricas implements ObservadorAmbiente {
     public void saveToFile(FileOutputStream out) throws IOException {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out));
         writer.newLine();
-        writer.write("Métricas de ejecución\n");
-        writer.write("====================================\n");
+        writer.write("Métricas de ejecución");
+        writer.newLine();
+        writer.write("====================================");
+        writer.newLine();
         int iterations = polarizacion.getItemCount();
         writer.write(String.format("%-18s: %4d%n", "Cant. Iteraciones", iterations));
         writer.write(String.format("%-18s: %4.4f%n", "Avg. Extensión", sumExtension / iterations));

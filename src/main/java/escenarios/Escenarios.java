@@ -79,14 +79,17 @@ class ConfiguracionAgente implements IReportFile {
     public void saveToFile(FileOutputStream out) throws IOException {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out));
 
-        writer.write("Parámetros de Agentes\n");
-        writer.write("====================================\n");
+        writer.write("Parámetros de Agentes");
+        writer.newLine();
+        writer.write("====================================");
+        writer.newLine();
         writer.write(String.format("%-21s: %s%n", "Cantidad de Objetivos", cantidadObjetivos));
         writer.write(String.format("%-21s: %s%n", "Cantidad de Agentes", cantidadAgentes));
         writer.write(String.format("%-21s: %s%n", "Radio de Agente", radioAgente));
         writer.write(String.format("%-21s: %s%n", "Rango de Interacción", rangoDeInteraccion));
         writer.write(String.format("%-21s: %s%n", "Radio de Obstaculos", radioObstaculos));
-        writer.write("====================================\n");
+        writer.write("====================================");
+        writer.newLine();
         writer.newLine();
         writer.flush();
     }
@@ -109,8 +112,10 @@ class ConfiguracionModelo implements IReportFile {
     public void saveToFile(FileOutputStream out) throws IOException {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out));
 
-        writer.write("Parámetros del Modelo\n");
-        writer.write("====================================\n");
+        writer.write("Parámetros del Modelo");
+        writer.newLine();
+        writer.write("====================================");
+        writer.newLine();
         writer.write(String.format("%-18s: %4.4f%n", "C1", c1));
         writer.write(String.format("%-18s: %4.4f%n", "C2", c2));
         writer.write(String.format("%-18s: %4.4f%n", "C3", c3));
@@ -119,7 +124,7 @@ class ConfiguracionModelo implements IReportFile {
         writer.write(String.format("%-18s: %4.4f%n", "Obstáculos", obstaculos));
         writer.write(String.format("%-18s: %4.4f%n", "Extensión Máx.", maxExtension));
         writer.write(String.format("%-18s: %4.4f%n", "Polarización Máx.", maxPolarizacion));
-        writer.write("====================================\n");
+        writer.write("====================================");
         writer.newLine();
         writer.flush();
     }
