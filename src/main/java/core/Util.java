@@ -147,35 +147,20 @@ public class Util {
 		g2.drawPolygon(X, Y, 4);
 	}
 	
-	public static double anguloEntreVectores(Vector A, Vector B)
-	{
-		if(A.equals(B))
-		{
-			return 0;
-		}
-		
-		
+	public static double anguloEntreVectores(Vector A, Vector B) {
+		if(A.equals(B)) return 0.0;
+
 		double normaA = A.norma();
 		double normaB = B.norma();
 		double temp = 0.0;
 		
-		if( normaA == 0.0 || normaB == 0.0)
-		{
+		if( normaA == 0.0 || normaB == 0.0)	{
 			return 0.0;
 		}
+
+		double  a = A.productoEscalar(B)/(normaA*normaB);
 		
-		double productoPunto = A.productoEscalar(B);
-				
-		float dotProduct = new Double(productoPunto).floatValue();
-		float div = new Double(normaA*normaB).floatValue();
-		
-		double  a = dotProduct/(div);
-		
-		temp = a;
-		temp = temp + a;
-		a = temp - a; //trato de eliminar algunos errores de redondeo							
-		
-		double rad = Math.acos(a);		
+		double rad = Math.acos(a);
 		
 		return Math.toDegrees(rad);
 	}

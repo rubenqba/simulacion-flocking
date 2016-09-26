@@ -93,7 +93,14 @@ public class Escenario3Test {
 
     @Test
     public void testManualSingle() throws InterruptedException, ExecutionException {
-        new Experimento(false, 400, .1, .2, .2, TipoMovimiento.MEJORADO, new Object[]{0.01d}).test();
+        new Experimento(false, 100, .01, .2, .2, TipoMovimiento.INTEGRAL, new Object[]{0.01d}).test();
+    }
+
+    @Test
+    public void testArmando() throws InterruptedException, ExecutionException {
+        for (int i = 1; i <= 5; i++) {
+            new Experimento(false, 100 * i, .01, .2, .2, TipoMovimiento.INTEGRAL, new Object[]{0.01d}).test();
+        }
     }
 
     @AllArgsConstructor
@@ -215,7 +222,7 @@ public class Escenario3Test {
             if (e.isMostrarSimulacion()) {
                 for (ObservadorAmbiente observer : s.getObservadores()) {
                     if (ObservadorMetricas.class.isAssignableFrom(observer.getClass())) {
-                        ((ObservadorMetricas)observer).mostrarReportesCortos();
+                        ((ObservadorMetricas) observer).mostrarReportesCortos();
                     }
                 }
                 try {
@@ -224,9 +231,6 @@ public class Escenario3Test {
                     e1.printStackTrace();
                 }
             }
-
-            String leftString = "abc", rigthString = "def";
-
         }
     }
 }

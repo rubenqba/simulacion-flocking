@@ -19,6 +19,8 @@ public class Vector {
     public Vector(int dimension) {
         this.dimension = dimension;
         datos = new double[dimension];
+        IntStream.range(0, dimension)
+                .forEach(i -> datos[i] = 0);
     }
 
     public int getDimension() {
@@ -56,6 +58,10 @@ public class Vector {
                 .reduce(0, Double::sum);
     }
 
+    public boolean isNaN() {
+        return Arrays.stream(datos).anyMatch(d -> Double.isNaN(d));
+    }
+
     public Vector clonar() {
         return new Vector(datos);
     }
@@ -78,7 +84,7 @@ public class Vector {
 
     public void normalizar(double cota) {
         Double norma = norma();
-        if (!norma.isNaN()) {
+        if (!norma.isNaN() && norma != 0) {
             this.multiplicarEscalar(cota / norma);
         }
     }
@@ -116,29 +122,4 @@ public class Vector {
         return datos;
     }
 
-    public static void main(String ar[]) {
-        Vector v = new Vector(5, 4);
-        Vector u = new Vector(3, 4);
-
-        System.out.println(u);
-        System.out.println(v);
-
-        v.unitario();
-        System.out.println(v.norma());
-
-
-        System.out.println(u.norma());
-
-        System.out.println(u.productoEscalar(v));
-
-        System.out.println(u.equals(v));
-        System.out.println(u.equals(u));
-        System.out.println(v.equals(u));
-        System.out.println(v.equals(v));
-
-        System.out.println(v.distancia(u));
-        System.out.println(u.distancia(v));
-        System.out.println(v.distancia(v));
-        System.out.println(u.distancia(u));
-    }
 }

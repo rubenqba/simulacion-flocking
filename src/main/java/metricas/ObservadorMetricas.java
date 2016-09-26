@@ -224,13 +224,14 @@ public class ObservadorMetricas implements ObservadorAmbiente {
         int iterations = polarizacion.getItemCount();
         writer.write(String.format("%-18s: %4d%n", "Cant. Iteraciones", iterations));
         writer.write(String.format("%-18s: %4.4f%n", "Avg. Extensión", sumExtension / iterations));
-        writer.write(String.format("%-18s: %4.4f%n", "Avg. Polarización", sumPolarizacion / iterations));
+        writer.write(String.format("%-18s: %4.4f%n", "Avg. Polarización", getAvgWithoutNan(polarizacion)));
         writer.write(String.format("%-18s: %4d%n", "Cant. Colisiones", sumColisiones));
         writer.write(String.format("%-18s: %4.4f%n", "Avg. Factor Col.", sumFactorColisiones / iterations));
         writer.write(String.format("%-18s: %4.4f%n", "Avg. Cons. Extensión", sumConsExtension / iterations));
         writer.write(String.format("%-18s: %4.4f%n", "Avg. Cons. Polarización", sumConsPolarizacion / iterations));
         writer.write(String.format("%-18s: %4.4f%n", "Avg. Calidad", sumCalidad / iterations));
         writer.newLine();
+
 
         writer.write(String.format("%9s\t%9s\t%12s\t%10s\t%15s\t%20s\t%25s\t%8s",
                 "Iteracion", "Extension", "Polarizacion", "Colisiones", "Factor-Colision", "Consistencia-Extension",
@@ -245,5 +246,13 @@ public class ObservadorMetricas implements ObservadorAmbiente {
         }
         writer.write("====================================\n");
         writer.flush();
+    }
+
+    private double getAvgWithoutNan(XYSeries serie) {
+        return serie.getItems().stream()
+                .filter(d -> !Double.isNaN(((XYDataItem) d).getYValue()))
+                .mapToDouble(d -> ((XYDataItem) d).getYValue())
+                .average()
+                .orElse(0);
     }
 }

@@ -106,7 +106,7 @@ public class Metrica {
             //////// Calculando polarización,extension, colisiones y
             //////// consistencias//////////
 
-            double polarizacion = 0.0;
+            double polarizacionLocal = 0.0;
             double extension = 0.0;
             double factorColisiones = 0.0;
             double consPolarizacion = 0.0;
@@ -128,8 +128,8 @@ public class Metrica {
                     menorDistancia = distAgenteObjetivo;
                 }
 
-                extension = extension + normaDiferencia;
-                polarizacion = polarizacion + angulo;
+                extension += normaDiferencia;
+                polarizacionLocal += angulo;
                 if (a.isEnEstadoColision()) {
                     factorColisiones++;
                     cantAgentesEnColision++;
@@ -138,18 +138,18 @@ public class Metrica {
 
                 if (!a.isHaColisionado()) {
                     cantAgentesSinColision++;
-                    consExtension = consExtension + normaDiferencia;
-                    consPolarizacion = consPolarizacion + angulo;
+                    consExtension += normaDiferencia;
+                    consPolarizacion += angulo;
                 }
             }
 
             if (cantAgentes == 0) {
-                polarizacion = 0;
+                polarizacionLocal = 0;
                 extension = 0;
                 factorColisiones = 0;
                 funcionObjetivo = 0;
             } else {
-                polarizacion = polarizacion / cantAgentes;
+                polarizacionLocal = polarizacionLocal / cantAgentes;
                 extension = extension / cantAgentes;
                 factorColisiones = factorColisiones / cantAgentes;
                 funcionObjetivo = funcionObjetivo / cantAgentes;
@@ -171,12 +171,13 @@ public class Metrica {
 
             pesoSubsistema = cantAgentes / totalAgentes;
 
-            polarizacionPromedio += polarizacion * pesoSubsistema;
+            polarizacionPromedio += polarizacionLocal * pesoSubsistema;
             extensionPromedio += extension * pesoSubsistema;
             factorColisionesPromedio += factorColisiones * pesoSubsistema;
             consExtPromedio += consExtension * pesoSubsistema;
             consPolPromedio += consPolarizacion * pesoSubsistema;
             funcionObjetivoPromedio += funcionObjetivo * pesoSubsistema;
+
         }
 
         this.polarizacion = polarizacionPromedio;
@@ -186,7 +187,6 @@ public class Metrica {
         this.consPolarizacion = consPolPromedio;
         this.calidad = 0.5 * (this.consExtension + this.consPolarizacion);
         this.funcionObjetivo = funcionObjetivoPromedio;
-
     }
 
     private VecindadObjetivos extraerObjetivos(VecindadBoid boids2) {
@@ -223,8 +223,7 @@ public class Metrica {
         // lleno las vecindades por objetivo
         for (Boid boid : boids) {
             Objetivo o = boid.getObjetivo();
-            VecindadBoid conjuntoAgentes = conjuntosDeAgentes.get(o.getID());
-            conjuntoAgentes.add(boid);
+            conjuntosDeAgentes.get(o.getID()).add(boid);
         }
     }
 
@@ -283,122 +282,6 @@ public class Metrica {
 
     private double distancia(AgenteMovil a, AgenteMovil b) {
         return a.getPosicion().distancia(b.getPosicion());
-    }
-
-    public static void pruebaMetricas() {
-        double radio = 1;
-        double maxExtension = 10;
-        double penalPolarizacion = 1;
-        double penalExtension = 1;
-
-        AmbienteMovil ambiente = new AmbienteMovil();
-
-        Boid boid1 = new Boid(5, 2, ambiente);
-        Boid boid2 = new Boid(1, 3, ambiente);
-        Boid boid3 = new Boid(1, 0, ambiente);
-        Boid boid4 = new Boid(4, 2, ambiente);
-
-        boid1.setVelocidad(new Vector(2, 2));
-        boid2.setVelocidad(new Vector(1, 0));
-        boid3.setVelocidad(new Vector(3, 3));
-        boid4.setVelocidad(new Vector(2, 1));
-
-        Objetivo objetivo = new Objetivo(1, 1, ambiente);
-        VecindadObjetivos objetivos = new VecindadObjetivos();
-        objetivos.add(objetivo);
-
-        boid1.setObjetivo(objetivo);
-        boid2.setObjetivo(objetivo);
-        boid3.setObjetivo(objetivo);
-        boid4.setObjetivo(objetivo);
-
-        boid1.setObjetivos(objetivos);
-        boid2.setObjetivos(objetivos);
-        boid3.setObjetivos(objetivos);
-        boid4.setObjetivos(objetivos);
-
-        boid1.setRadio(radio);
-        boid2.setRadio(radio);
-        boid3.setRadio(radio);
-        boid4.setRadio(radio);
-
-        ambiente.agregarAgente(boid1);
-        ambiente.agregarAgente(boid2);
-        ambiente.agregarAgente(boid3);
-        ambiente.agregarAgente(boid4);
-
-        Metrica m = new Metrica(ambiente);
-        m.setMaxExt(maxExtension);
-        m.setPenalEnExtension(penalExtension);
-        m.setPenalEnPolarizacion(penalPolarizacion);
-
-        m.calcularMetricas();
-    }
-
-    public static void pruebaObtenerConjuntos() {
-        AmbienteMovil ambiente = new AmbienteMovil();
-
-        Boid a1 = new Boid(1, 1, ambiente);
-        Boid a2 = new Boid(2, 2, ambiente);
-        Boid a3 = new Boid(3, 3, ambiente);
-        Boid a4 = new Boid(4, 4, ambiente);
-        Boid a5 = new Boid(5, 5, ambiente);
-
-        Objetivo o1 = new Objetivo(1, 1, ambiente);
-        Objetivo o2 = new Objetivo(1, 1, ambiente);
-        Objetivo o3 = new Objetivo(1, 1, ambiente);
-        Objetivo o4 = new Objetivo(1, 1, ambiente);
-        Objetivo o5 = new Objetivo(1, 1, ambiente);
-
-        o1.setID(1);
-        o2.setID(2);
-        o3.setID(3);
-        o4.setID(4);
-        o5.setID(5);
-
-        VecindadObjetivos objs = new VecindadObjetivos();
-
-        objs.add(o1);
-        objs.add(o2);
-        objs.add(o3);
-        objs.add(o4);
-        objs.add(o5);
-
-        a1.setObjetivos(objs);
-        a2.setObjetivos(objs);
-        a3.setObjetivos(objs);
-        a4.setObjetivos(objs);
-        a5.setObjetivos(objs);
-
-        a1.setObjetivo(o1);
-        a2.setObjetivo(o1);
-        a3.setObjetivo(o1);
-        a4.setObjetivo(o1);
-        a5.setObjetivo(o1);
-
-        ambiente.agregarAgente(a1);
-        ambiente.agregarAgente(a2);
-        ambiente.agregarAgente(a3);
-        ambiente.agregarAgente(a4);
-        ambiente.agregarAgente(a5);
-
-        ambiente.agregarAgente(o1);
-        ambiente.agregarAgente(o2);
-        ambiente.agregarAgente(o3);
-        ambiente.agregarAgente(o4);
-        ambiente.agregarAgente(o5);
-
-        Metrica m = new Metrica(ambiente);
-        m.calcularConjuntosDeAgentes();
-        m.mostrarConjuntos();
-    }
-
-    public static void main(String ar[]) {
-        Vector A = new Vector(3.407953946628199, 3.658667776344455);
-
-        Vector B = new Vector(0.6815907893256399, 0.7317335552688911);
-
-        Util.anguloEntreVectores(A, B);
     }
 
     public double getPolarizacion() {

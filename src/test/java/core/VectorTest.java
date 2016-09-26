@@ -3,6 +3,8 @@ package core;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.*;
 
 /**
@@ -78,11 +80,6 @@ public class VectorTest {
     }
 
     @Test
-    public void equals() throws Exception {
-
-    }
-
-    @Test
     public void acotarMagnitud() throws Exception {
 
     }
@@ -91,6 +88,10 @@ public class VectorTest {
     public void unitario() throws Exception {
         Vector u = new Vector(2d, 0d);
         assertThat(u.unitario(), equalTo(new Vector(1d, 0d)));
+
+        u = new Vector(-0.0d, -0.0d);
+        assertThat(u.unitario().isNaN(), is(false));
+        assertThat(u.unitario(), equalTo(new Vector(0, 0)));
     }
 
 }
