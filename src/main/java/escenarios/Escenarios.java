@@ -13,10 +13,10 @@ import java.util.Map;
 import Vecindades.VecindadObjetivos;
 import core.AmbienteMovil;
 import core.Movimiento;
-import implementacion.MovimientoBoidIntegral;
-import implementacion.MovimientoBoidMejorado;
-import implementacion.MovimientoCuatroEsquinas;
-import implementacion.TipoMovimiento;
+import implementacion.*;
+import implementacion.functions.ExponentialFunction;
+import implementacion.functions.IntegralFunction;
+import implementacion.functions.SplineFunction;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -26,6 +26,7 @@ import metricas.ObservadorMetricas;
 import metricas.ObservadorObjetivo;
 import metricas.ObservadorVariablesEstado;
 import metricas.ObservadorVelocidad;
+import org.apache.commons.math3.analysis.UnivariateFunction;
 import reportes.IReportFile;
 import tiposagentes.Boid;
 import tiposagentes.Objetivo;
@@ -67,7 +68,9 @@ public class Escenarios {
 @Builder
 @Getter
 class ConfiguracionAgente implements IReportFile {
-    /** parámetros de los agentes **/
+    /**
+     * parámetros de los agentes
+     **/
     private double cantidadObjetivos = 1;
     private double radioAgente = 3;
     private double rangoDeInteraccion = 25;
@@ -129,8 +132,8 @@ class ConfiguracionModelo implements IReportFile {
         writer.flush();
     }
 
-    public MovimientoBoidMejorado buildMovimientoBoidMejorado() {
-        MovimientoBoidMejorado mov = new MovimientoBoidMejorado();
+    public MovimientoBoidMejorado buildMovimientoBoidMejorado(UnivariateFunction function) {
+        MovimientoBoidMejorado mov = new MovimientoBoidMejorado(function);
         mov.setC1(c1);
         mov.setC2(c2);
         mov.setC3(c3);
@@ -140,16 +143,6 @@ class ConfiguracionModelo implements IReportFile {
         return mov;
     }
 
-    public MovimientoBoidIntegral buildMovimientoBoidIntegral(double epsilon) {
-        MovimientoBoidIntegral mov = new MovimientoBoidIntegral(epsilon);
-        mov.setC1(c1);
-        mov.setC2(c2);
-        mov.setC3(c3);
-        mov.setParametroObstaculos(obstaculos);
-        mov.setVelMax(velMax);
-        mov.setZonaVirtual(zonaVirtual);
-        return mov;
-    }
 
     public Movimiento buildMovimientoCuatroEsquinas() {
         MovimientoCuatroEsquinas movObjetivo = new MovimientoCuatroEsquinas();
@@ -157,14 +150,16 @@ class ConfiguracionModelo implements IReportFile {
         return movObjetivo;
     }
 
-    public Movimiento buildMovimiento(TipoMovimiento m, Object ...params) {
-        switch(m){
+    public Movimiento buildMovimiento(TipoMovimiento m) {
+        switch (m) {
             case INTEGRAL:
-                return buildMovimientoBoidIntegral((Double) params[0]);
+                return buildMovimientoBoidMejorado(new IntegralFunction());
             case MEJORADO:
-                return buildMovimientoBoidMejorado();
+                return buildMovimientoBoidMejorado(new ExponentialFunction());
             case CUATRO_ESQUINAS:
                 return buildMovimientoCuatroEsquinas();
+            case SPLINE:
+                return buildMovimientoBoidMejorado(new SplineFunction());
             default:
                 return null;
         }

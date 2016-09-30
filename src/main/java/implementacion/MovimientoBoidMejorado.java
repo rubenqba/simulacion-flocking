@@ -6,10 +6,17 @@ import core.AgenteMovil;
 import core.Percepcion;
 import core.Util;
 import core.Vector;
+import org.apache.commons.math3.analysis.UnivariateFunction;
 import tiposagentes.Boid;
 import tiposagentes.Obstaculo;
 
 public class MovimientoBoidMejorado extends MovimientoBoid {
+
+    private UnivariateFunction function;
+
+    public MovimientoBoidMejorado(UnivariateFunction function) {
+        this.function = function;
+    }
 
     @Override
     public void acotarVelocidad(Boid boid, Vector vel) {
@@ -118,27 +125,20 @@ public class MovimientoBoidMejorado extends MovimientoBoid {
     }
 
     /**
-     * Est� funci�n permite obtener la cota adecuada para la velocidad
+     * Esta función permite obtener la cota adecuada para la velocidad
      * 
-     * @param z
+     * @param x
      * @return
      */
-    protected double f(double z) {
-        if (z < 0)
-            return 0.0001;
-        if (z > 1)
-            return 1;
-
-        double temp = 0;
-        double a = 0.4;
-        double f = 1 + Math.exp(-10 * (z - a));
-        f = 1 / f;
-
-        temp = f;
-        temp = temp + f;
-        f = temp - f;
-
-        return f;
+    protected double f(double x) {
+        double result = 0;
+        if (x < 0)
+            result = 0.001d;
+        else if (x > 1)
+            result = 1;
+        else
+            result = function.value(x);
+        return result;
     }
 
     @Override

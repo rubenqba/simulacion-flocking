@@ -75,8 +75,8 @@ public class Escenario3Test {
     public void testAurelio() throws InterruptedException {
         for (Integer agentes : cantidadAgentes) {
             for (Parameters p : params) {
-                new Experimento(false, agentes, p.getC1(), p.getC2(), p.getC3Min(), TipoMovimiento.MEJORADO, null).test();
-                new Experimento(false, agentes, p.getC1(), p.getC2(), p.getC3Max(), TipoMovimiento.MEJORADO, null).test();
+                new Experimento(false, agentes, p.getC1(), p.getC2(), p.getC3Min(), TipoMovimiento.MEJORADO).test();
+                new Experimento(false, agentes, p.getC1(), p.getC2(), p.getC3Max(), TipoMovimiento.MEJORADO).test();
             }
         }
     }
@@ -85,21 +85,21 @@ public class Escenario3Test {
     public void testGustavo() throws InterruptedException, ExecutionException {
         for (Integer agentes : cantidadAgentes) {
             for (Parameters p : params) {
-                new Experimento(false, agentes, p.getC1(), p.getC2(), p.getC3Min(), TipoMovimiento.INTEGRAL, new Object[]{0.01d}).test();
-                new Experimento(false, agentes, p.getC1(), p.getC2(), p.getC3Max(), TipoMovimiento.INTEGRAL, new Object[]{0.01d}).test();
+                new Experimento(false, agentes, p.getC1(), p.getC2(), p.getC3Min(), TipoMovimiento.SPLINE).test();
+                new Experimento(false, agentes, p.getC1(), p.getC2(), p.getC3Max(), TipoMovimiento.SPLINE).test();
             }
         }
     }
 
     @Test
     public void testManualSingle() throws InterruptedException, ExecutionException {
-        new Experimento(false, 100, .01, .2, .2, TipoMovimiento.INTEGRAL, new Object[]{0.01d}).test();
+        new Experimento(false, 100, .01, .2, .2, TipoMovimiento.SPLINE).test();
     }
 
     @Test
     public void testArmando() throws InterruptedException, ExecutionException {
         for (int i = 1; i <= 5; i++) {
-            new Experimento(false, 100 * i, .01, .2, .2, TipoMovimiento.INTEGRAL, new Object[]{0.01d}).test();
+            new Experimento(false, 100 * i, .01, .2, .2, TipoMovimiento.INTEGRAL).test();
         }
     }
 
@@ -110,7 +110,6 @@ public class Escenario3Test {
         private Integer agentes;
         private Double c1, c2, c3;
         private TipoMovimiento movimiento;
-        private Object[] movParams;
 
         @Override
         public Void call() throws Exception {
@@ -179,7 +178,7 @@ public class Escenario3Test {
                         .withAmbiente(e.getAmbiente())
                         .withX(v.get(0))
                         .withY(v.get(1))
-                        .withMovimiento(e.getConfiguracionModelo().buildMovimiento(movimiento, movParams))
+                        .withMovimiento(e.getConfiguracionModelo().buildMovimiento(movimiento))
                         .withConfiguracionAgente(e.getConfiguracionAgente())
                         .buildBoid();
             }

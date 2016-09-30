@@ -2,6 +2,7 @@ package escenarios;
 
 import implementacion.MovimientoBoid;
 import implementacion.MovimientoBoidMejorado;
+import implementacion.functions.ExponentialFunction;
 import tiposagentes.*;
 import Vecindades.VecindadObjetivos;
 
@@ -11,7 +12,7 @@ public class Escenario2 {
 	
 	public static void main(String arg[])
 	{
-		/**paràmetros de los agentes**/
+		/**parï¿½metros de los agentes**/
 		double radioAgente = 4;
 		double rangoDeInteraccion = 100;
 		double radioObstaculos = 10;
@@ -46,7 +47,7 @@ public class Escenario2 {
 		objetivos.add(objetivo3);
 		objetivos.add(objetivo4);
 		
-		MovimientoBoidMejorado mov = new MovimientoBoidMejorado();
+		MovimientoBoidMejorado mov = new MovimientoBoidMejorado(new ExponentialFunction());
 		mov.setC1(c1);
 		mov.setC2(c2);
 		mov.setC3(c3);

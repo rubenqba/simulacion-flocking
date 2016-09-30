@@ -10,6 +10,7 @@ import core.Util;
 import core.Vector;
 import implementacion.MovimientoBoidMejorado;
 import implementacion.MovimientoCuatroEsquinas;
+import implementacion.functions.ExponentialFunction;
 import metricas.ObservadorMetricas;
 import tiposagentes.Boid;
 import tiposagentes.Objetivo;
@@ -75,7 +76,7 @@ public class Escenario4 {
 
         objetivo1.setMov(movObjetivo);
 
-        MovimientoBoidMejorado mov = new MovimientoBoidMejorado();
+        MovimientoBoidMejorado mov = new MovimientoBoidMejorado(new ExponentialFunction());
         mov.setC1(c1);
         mov.setC2(c2);
         mov.setC3(c3);

@@ -1,6 +1,7 @@
 package escenarios;
 
 import implementacion.MovimientoBoidMejorado;
+import implementacion.functions.ExponentialFunction;
 import tiposagentes.Boid;
 import tiposagentes.Objetivo;
 import tiposagentes.Obstaculo;
@@ -38,7 +39,7 @@ public class PruebaEvasionObstaculo {
 		VecindadObjetivos os = new VecindadObjetivos();
 		os.add(o);
 		
-		MovimientoBoidMejorado m = new MovimientoBoidMejorado();
+		MovimientoBoidMejorado m = new MovimientoBoidMejorado(new ExponentialFunction());
 		m.setC1(c1);
 		m.setC2(c2);
 		m.setC3(c3);

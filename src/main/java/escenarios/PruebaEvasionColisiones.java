@@ -1,5 +1,6 @@
 package escenarios;
 
+import implementacion.functions.ExponentialFunction;
 import metricas.ObservadorEstadoAmbiente;
 import core.Vector;
 
@@ -41,7 +42,7 @@ public class PruebaEvasionColisiones {
 		VecindadObjetivos os = new VecindadObjetivos();
 		os.add(o);
 		
-		MovimientoBoidMejorado m = new MovimientoBoidMejorado();
+		MovimientoBoidMejorado m = new MovimientoBoidMejorado(new ExponentialFunction());
 		m.setC1(c1);
 		m.setC2(c2);
 		m.setC3(c3);
