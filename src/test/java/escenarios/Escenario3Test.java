@@ -99,13 +99,13 @@ public class Escenario3Test {
     public void testComparacion() throws InterruptedException, ExecutionException {
         for (Integer agentes : cantidadAgentes) {
             new Experimento(false, agentes, .01, .2, .2, TipoMovimiento.MEJORADO).test();
-            new Experimento(false, agentes, .01, .2, .2, TipoMovimiento.SPLINE).test();
+//            new Experimento(false, agentes, .01, .2, .2, TipoMovimiento.SPLINE).test();
         }
     }
 
     @Test
     public void testManualSingle() throws InterruptedException, ExecutionException {
-        new Experimento(false, 100, 0.01, .2, .2, TipoMovimiento.SPLINE).test();
+        new Experimento(false, 500, .9, .2, -.1, TipoMovimiento.MEJORADO).test();
     }
 
     @AllArgsConstructor

@@ -11,6 +11,6 @@ public class ExponentialFunction implements UnivariateFunction {
      */
     @Override
     public double value(double x) {
-        return 1 / 1 + Math.exp(-10 * (x - 0.4));
+        return 1 / (1 + Math.exp(-10 * (x - 0.4)));
     }
 }
