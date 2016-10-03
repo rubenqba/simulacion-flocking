@@ -3,10 +3,7 @@ package implementacion;
 import Vecindades.VecindadBoid;
 import Vecindades.VecindadObjetivos;
 import Vecindades.VecindadObstaculos;
-import core.AgenteMovil;
-import core.Movimiento;
-import core.Percepcion;
-import core.Vector;
+import core.*;
 import tiposagentes.Boid;
 import tiposagentes.Objetivo;
 import tiposagentes.Obstaculo;
@@ -20,9 +17,9 @@ public class MovimientoBoid implements Movimiento {
     private double zonaVirtual = 5;
     private FuncionAptitud F = new FuncionAptitudConcreta();
     private double parametroObstaculo = 1;
-
     private double mejorAptitudVecino = Double.POSITIVE_INFINITY;
     private double mejorAptitud = Double.POSITIVE_INFINITY;
+
 
     public void mover(AgenteMovil agente) {
         if (agente instanceof Boid) {
@@ -64,13 +61,13 @@ public class MovimientoBoid implements Movimiento {
         primerTermino = boid.getVelocidad().clonar();
         segundoTermino = o.getPosicion().clonar();
         tercerTermino = mejorAgente.getPosicion().clonar();// seguir al mejor
-                                                           // agente
+        // agente
 
         primerTermino.multiplicarEscalar(c1);
         segundoTermino.restar(boid.getPosicion());
-        segundoTermino.multiplicarEscalar(c2 * Math.random());
+        segundoTermino.multiplicarEscalar(c2 * Random.getInstance().getRandom().nextDouble());
         tercerTermino.restar(boid.getPosicion());
-        tercerTermino.multiplicarEscalar(c3 * Math.random());
+        tercerTermino.multiplicarEscalar(c3 * Random.getInstance().getRandom().nextDouble());
 
         Vector velocidad = new Vector(primerTermino.getDimension());
 
@@ -85,7 +82,7 @@ public class MovimientoBoid implements Movimiento {
 
     public Objetivo calcularObjetivo(VecindadObjetivos objetivos, Boid boid, VecindadObstaculos obstaculos) {
         mejorAptitud = Double.POSITIVE_INFINITY;// la mejor aptitud es la mas
-                                                // pequeña
+        // pequeña
         Objetivo o = null;
 
         double distancia = 0;
@@ -156,7 +153,7 @@ public class MovimientoBoid implements Movimiento {
             Vector pos = boid.getPosicion();
             distanciaDeseada = boid.getRadio() + zonaVirtual + vecino.getRadio();
             distancia = pos.distancia(vecino.getPosicion());// esto ya lo habia
-                                                            // calculado antes
+            // calculado antes
 
             if (distancia < distanciaDeseada) {
                 recalcularPosicion(boid, vecino, distancia);
@@ -246,11 +243,11 @@ public class MovimientoBoid implements Movimiento {
         this.zonaVirtual = zonaVirtual;
     }
 
-    public void setParametroObstaculos(double parametroObstaculos) {
-        this.parametroObstaculo = parametroObstaculos;
-    }
-
     public double getParametroObstaculos() {
         return parametroObstaculo;
+    }
+
+    public void setParametroObstaculos(double parametroObstaculos) {
+        this.parametroObstaculo = parametroObstaculos;
     }
 }

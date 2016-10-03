@@ -15,6 +15,7 @@ public class MovimientoBoidMejorado extends MovimientoBoid {
     private UnivariateFunction function;
 
     public MovimientoBoidMejorado(UnivariateFunction function) {
+        super();
         this.function = function;
     }
 

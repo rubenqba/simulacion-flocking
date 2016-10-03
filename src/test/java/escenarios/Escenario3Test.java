@@ -35,12 +35,6 @@ import reportes.FileManager;
 
 public class Escenario3Test {
 
-    @AllArgsConstructor
-    private class Parameters {
-        @Getter
-        private double c1, c2, c3Min, c3Max;
-    }
-
     private List<Parameters> params;
     private List<Integer> cantidadAgentes;
 
@@ -72,7 +66,7 @@ public class Escenario3Test {
     }
 
     @Test
-    public void testAurelio() throws InterruptedException {
+    public void testMejorado() throws InterruptedException {
         for (Integer agentes : cantidadAgentes) {
             for (Parameters p : params) {
                 new Experimento(false, agentes, p.getC1(), p.getC2(), p.getC3Min(), TipoMovimiento.MEJORADO).test();
@@ -82,7 +76,17 @@ public class Escenario3Test {
     }
 
     @Test
-    public void testGustavo() throws InterruptedException, ExecutionException {
+    public void testIntegral() throws InterruptedException, ExecutionException {
+        for (Integer agentes : cantidadAgentes) {
+            for (Parameters p : params) {
+                new Experimento(false, agentes, p.getC1(), p.getC2(), p.getC3Min(), TipoMovimiento.INTEGRAL).test();
+                new Experimento(false, agentes, p.getC1(), p.getC2(), p.getC3Max(), TipoMovimiento.INTEGRAL).test();
+            }
+        }
+    }
+
+    @Test
+    public void testSpline() throws InterruptedException, ExecutionException {
         for (Integer agentes : cantidadAgentes) {
             for (Parameters p : params) {
                 new Experimento(false, agentes, p.getC1(), p.getC2(), p.getC3Min(), TipoMovimiento.SPLINE).test();
@@ -92,15 +96,22 @@ public class Escenario3Test {
     }
 
     @Test
-    public void testManualSingle() throws InterruptedException, ExecutionException {
-        new Experimento(false, 100, .01, .2, .2, TipoMovimiento.SPLINE).test();
+    public void testComparacion() throws InterruptedException, ExecutionException {
+        for (Integer agentes : cantidadAgentes) {
+            new Experimento(false, agentes, .01, .2, .2, TipoMovimiento.MEJORADO).test();
+            new Experimento(false, agentes, .01, .2, .2, TipoMovimiento.SPLINE).test();
+        }
     }
 
     @Test
-    public void testArmando() throws InterruptedException, ExecutionException {
-        for (int i = 1; i <= 5; i++) {
-            new Experimento(false, 100 * i, .01, .2, .2, TipoMovimiento.INTEGRAL).test();
-        }
+    public void testManualSingle() throws InterruptedException, ExecutionException {
+        new Experimento(false, 100, 0.01, .2, .2, TipoMovimiento.SPLINE).test();
+    }
+
+    @AllArgsConstructor
+    private class Parameters {
+        @Getter
+        private double c1, c2, c3Min, c3Max;
     }
 
     @AllArgsConstructor
