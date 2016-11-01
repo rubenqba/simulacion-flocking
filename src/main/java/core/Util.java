@@ -1,7 +1,6 @@
 package core;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
 
 import tiposagentes.Boid;
 import tiposagentes.Objetivo;
@@ -93,7 +92,7 @@ public class Util {
         return new Vector(cord);
     }
 
-    public static void pintarCirculo(Graphics g, int cordx, int cordy, int radio) {
+    public static void pintarCirculo(Graphics g, int cordx, int cordy, int radio, Color color) {
         Graphics2D g2 = (Graphics2D) g;
 
         int x = cordx - radio;
@@ -101,21 +100,11 @@ public class Util {
         int ancho, alto;
 
         ancho = alto = radio * 2;
-        g2.drawOval(x, y, ancho, alto);
-    }
-
-    public static void rellenarCirculo(Graphics g, int cordx, int cordy, int radio) {
-        Graphics2D g2 = (Graphics2D) g;
-
-        int x = cordx - radio;
-        int y = cordy - radio;
-        int ancho, alto;
-
-        ancho = alto = radio * 2;
+        g2.setColor(color);
         g2.fillOval(x, y, ancho, alto);
     }
 
-    public static void pintarRombo(Graphics g, int cordx, int cordy, int ancho, int alto) {
+    public static void pintarRombo(Graphics g, int cordx, int cordy, int ancho, int alto, Color color) {
         int deltaX = (int) (ancho / 2.0);
         int deltaY = (int) (alto / 2.0);
 
@@ -124,20 +113,10 @@ public class Util {
         int Y[] = {cordy - deltaY, cordy, cordy + deltaY, cordy};
 
         Graphics2D g2 = (Graphics2D) g;
+        g2.setColor(color);
         g2.fillPolygon(X, Y, 4);
     }
 
-    public static void pintarRomboSinRelleno(Graphics g, int cordx, int cordy, int ancho, int alto) {
-        int deltaX = (int) (ancho / 2.0);
-        int deltaY = (int) (alto / 2.0);
-
-
-        int X[] = {cordx, cordx + deltaX, cordx, cordx - deltaX};
-        int Y[] = {cordy - deltaY, cordy, cordy + deltaY, cordy};
-
-        Graphics2D g2 = (Graphics2D) g;
-        g2.drawPolygon(X, Y, 4);
-    }
 
     public static double anguloEntreVectores(Vector A, Vector B) {
         if (A.equals(B)) return 0.0;

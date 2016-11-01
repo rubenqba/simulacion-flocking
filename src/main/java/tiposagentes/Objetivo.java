@@ -1,6 +1,6 @@
 package tiposagentes;
 
-import java.awt.Graphics;
+import java.awt.*;
 
 import Graphics.Forma;
 import core.AgenteMovil;
@@ -50,7 +50,7 @@ public class Objetivo extends AgenteMovil {
         int cordy = (int) Math.round(getPosicion().get(1));
         int radio = (int) Math.round(getRadio());
 
-        Util.pintarRomboSinRelleno(g, cordx, cordy, radio * 2, radio * 2);
+        Util.pintarCirculo(g, cordx, cordy, radio * 2, Color.BLACK);
     }
 
     public void setColor(double r, double g, double b) {

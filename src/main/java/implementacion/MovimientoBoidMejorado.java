@@ -42,7 +42,7 @@ public class MovimientoBoidMejorado extends MovimientoBoid {
 
         double menorDistancia = Double.POSITIVE_INFINITY;
 
-        double dist = 0.0;
+        double dist;
 
         AgenteMovil agenteMasProbable = null;
 

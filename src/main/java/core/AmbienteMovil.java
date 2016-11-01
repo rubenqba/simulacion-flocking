@@ -6,9 +6,6 @@ public class AmbienteMovil extends Ambiente {
 
     ArrayList<AgenteMovil> agentes;
 
-    public static int tamx = 1000;
-    public static int tamy = 700;
-
     public AmbienteMovil() {
         agentes = new ArrayList<AgenteMovil>();
     }

@@ -1,9 +1,14 @@
 package core;
 
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observer;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -18,7 +23,7 @@ import org.apache.commons.lang3.time.StopWatch;
 @AllArgsConstructor
 public class Simulacion extends JFrame implements Runnable {
 
-    private static final long serialVersionUID = 1L;
+    private String name;
     private AmbienteMovil ambiente;
     private int iteraciones = 10000;
     private int delaySimulacion = 100;
@@ -28,22 +33,22 @@ public class Simulacion extends JFrame implements Runnable {
     private List<ObservadorAmbiente> observadores;
     private Grafico graph;
 
+    public Simulacion(AmbienteMovil ambiente) {
+        this.ambiente = ambiente;
+        observadores = new ArrayList<>();
+
+        habilitarGraficos3D(ambiente);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(AmbienteMovil.tamx, AmbienteMovil.tamy);
+        setVisible(true);
+    }
+
     public AmbienteMovil getAmbiente() {
         return ambiente;
     }
 
     public void setAmbiente(AmbienteMovil ambiente) {
         this.ambiente = ambiente;
-    }
-
-    public Simulacion(AmbienteMovil ambiente) {
-        this.ambiente = ambiente;
-        observadores = new ArrayList<ObservadorAmbiente>();
-
-        habilitarGraficos3D(ambiente);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(AmbienteMovil.tamx, AmbienteMovil.tamy);
-        setVisible(true);
     }
 
     protected void initGraphics() {
@@ -54,7 +59,7 @@ public class Simulacion extends JFrame implements Runnable {
     }
 
     private void habilitarGraficos3D(AmbienteMovil ambiente2) {
-        ArrayList<AgenteMovil> agentes = ambiente2.getAgentes();
+        List<AgenteMovil> agentes = ambiente2.getAgentes();
 
         if (agentes.size() > 0) {
             Vector posicion = agentes.get(0).getPosicion();
@@ -73,6 +78,7 @@ public class Simulacion extends JFrame implements Runnable {
         if (habilitarPintado)
             initGraphics();
         try {
+            Thread.sleep(5000);
             while (tiempo <= iteraciones && simulacionActiva) {
 
                 if (delaySimulacion > 0)
@@ -82,15 +88,13 @@ public class Simulacion extends JFrame implements Runnable {
                 tiempo++;
                 if (habilitarPintado) {
                     repaint();
-                    setTitle(String.format("iteración %d de %d", tiempo, iteraciones));
+                    setTitle(String.format("%s: iteración %d de %d", name, tiempo, iteraciones));
                 }
-
             }
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
-
     }
 
     protected void actuar() {
@@ -123,44 +127,19 @@ public class Simulacion extends JFrame implements Runnable {
         observadores.add(obs);
     }
 
-    public void removeObservador(ObservadorAmbiente obs) {
-        observadores.remove(obs);
-    }
-
-    public void setSimulacionActiva(boolean simulacionActiva) {
-        this.simulacionActiva = simulacionActiva;
-    }
-
-    public boolean isSimulacionActiva() {
-        return simulacionActiva;
-    }
-
     public void setDelaySimulacion(int delay) {
         this.delaySimulacion = delay;
-    }
-
-    public int getDelaySimulacion() {
-        return this.delaySimulacion;
     }
 
     public void setIteraciones(int iteraciones) {
         this.iteraciones = iteraciones;
     }
 
-    public int getIteraciones() {
-        return iteraciones;
-    }
-
     public void setHabilitarPintado(boolean habilitarPintado) {
         this.habilitarPintado = habilitarPintado;
-    }
-
-    public boolean isHabilitarPintado() {
-        return habilitarPintado;
     }
 
     public List<ObservadorAmbiente> getObservadores() {
         return observadores;
     }
-
 }

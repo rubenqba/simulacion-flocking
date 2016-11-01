@@ -4,19 +4,24 @@ import Vecindades.VecindadBoid;
 import Vecindades.VecindadObjetivos;
 import Vecindades.VecindadObstaculos;
 import core.*;
+import lombok.Getter;
+import lombok.Setter;
 import tiposagentes.Boid;
 import tiposagentes.Objetivo;
 import tiposagentes.Obstaculo;
 
+@Setter
+@Getter
 public class MovimientoBoid implements Movimiento {
 
     private double c1 = 1;// peso inercial
+    private double c1Min = 1;
     private double c2 = 1;// peso mejor posicion
     private double c3 = 1;// peso mejor agente del grupo
     private double velMax = 3;
     private double zonaVirtual = 5;
     private FuncionAptitud F = new FuncionAptitudConcreta();
-    private double parametroObstaculo = 1;
+    private double parametroObstaculos = 1;
     private double mejorAptitudVecino = Double.POSITIVE_INFINITY;
     private double mejorAptitud = Double.POSITIVE_INFINITY;
 
@@ -63,7 +68,7 @@ public class MovimientoBoid implements Movimiento {
         tercerTermino = mejorAgente.getPosicion().clonar();// seguir al mejor
         // agente
 
-        primerTermino.multiplicarEscalar(c1);
+        primerTermino.multiplicarEscalar(boid.isCourage()? c1 : c1Min);
         segundoTermino.restar(boid.getPosicion());
         segundoTermino.multiplicarEscalar(c2 * Random.getInstance().getRandom().nextDouble());
         tercerTermino.restar(boid.getPosicion());
@@ -85,10 +90,10 @@ public class MovimientoBoid implements Movimiento {
         // pequeña
         Objetivo o = null;
 
-        double distancia = 0;
-        double aptitud = 0;
-        double pesoObstaculo = 0;
-        F.setParametroObstaculo(parametroObstaculo);
+        double distancia;
+        double aptitud;
+        double pesoObstaculo;
+        F.setParametroObstaculo(parametroObstaculos);
 
         for (Objetivo obj : objetivos) {
             distancia = boid.getPosicion().distancia(obj.getPosicion());
@@ -108,10 +113,10 @@ public class MovimientoBoid implements Movimiento {
         this.mejorAptitudVecino = Double.POSITIVE_INFINITY;
         Boid mejorVecino = null;
 
-        double distancia = 0;
-        double aptitud = 0;
-        double pesoObstaculos = 0;
-        F.setParametroObstaculo(parametroObstaculo);
+        double distancia;
+        double aptitud;
+        double pesoObstaculos;
+        F.setParametroObstaculo(parametroObstaculos);
 
         for (Boid vecino : boids) {
             distancia = objetivo.getPosicion().distancia(vecino.getPosicion());
@@ -201,53 +206,5 @@ public class MovimientoBoid implements Movimiento {
         nuevaPosicion.restar(tempDiferencia);
 
         boid.setPosicion(nuevaPosicion);
-    }
-
-    public double getC1() {
-        return c1;
-    }
-
-    public void setC1(double c1) {
-        this.c1 = c1;
-    }
-
-    public double getC2() {
-        return c2;
-    }
-
-    public void setC2(double c2) {
-        this.c2 = c2;
-    }
-
-    public double getC3() {
-        return c3;
-    }
-
-    public void setC3(double c3) {
-        this.c3 = c3;
-    }
-
-    public double getVelMax() {
-        return velMax;
-    }
-
-    public void setVelMax(double velMax) {
-        this.velMax = velMax;
-    }
-
-    public double getZonaVirtual() {
-        return zonaVirtual;
-    }
-
-    public void setZonaVirtual(double zonaVirtual) {
-        this.zonaVirtual = zonaVirtual;
-    }
-
-    public double getParametroObstaculos() {
-        return parametroObstaculo;
-    }
-
-    public void setParametroObstaculos(double parametroObstaculos) {
-        this.parametroObstaculo = parametroObstaculos;
     }
 }

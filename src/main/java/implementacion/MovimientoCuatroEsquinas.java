@@ -59,32 +59,16 @@ public class MovimientoCuatroEsquinas implements Movimiento {
         }
     }
 
-    public Vector getEsquinaSupIzq() {
-        return esquinaSupIzq;
-    }
-
     public void setEsquinaSupIzq(Vector esquinaSupIzq) {
         this.esquinaSupIzq.set(esquinaSupIzq);
-    }
-
-    public Vector getEsquinaSupDer() {
-        return esquinaSupDer;
     }
 
     public void setEsquinaSupDer(Vector esquinaSupDer) {
         this.esquinaSupDer.set(esquinaSupDer);
     }
 
-    public Vector getEsquinaInfIzq() {
-        return esquinaInfIzq;
-    }
-
     public void setEsquinaInfIzq(Vector esquinaInfIzq) {
         this.esquinaInfIzq.set(esquinaInfIzq);
-    }
-
-    public Vector getEsquinaInfDer() {
-        return esquinaInfDer;
     }
 
     public void setEsquinaInfDer(Vector esquinaInfDer) {

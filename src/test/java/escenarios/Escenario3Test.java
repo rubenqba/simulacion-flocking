@@ -1,42 +1,23 @@
 package escenarios;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.notNullValue;
-
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.*;
-
+import experimentos.Experimento;
 import implementacion.TipoMovimiento;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.apache.commons.lang3.time.StopWatch;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import Vecindades.VecindadObjetivos;
-import archivos.ManejadorArchivos;
-import core.AmbienteMovil;
-import core.Simulacion;
-import core.Util;
-import core.Vector;
-import lombok.AllArgsConstructor;
-import metricas.ObservadorAmbiente;
-import metricas.ObservadorMetricas;
-import metricas.ObservadorVariablesEstado;
-import reportes.FileManager;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.IntStream;
 
 public class Escenario3Test {
 
     private List<Parameters> params;
     private List<Integer> cantidadAgentes;
+    private List<Integer> cantidadValientes;
+    private List<Integer> cantidadCobardes;
 
     @Before
     public void setup() {
@@ -63,14 +44,33 @@ public class Escenario3Test {
         );
 
         cantidadAgentes = Arrays.asList(100, 150, 200, 250, 300, 350, 400, 450, 500);
+
+        cantidadValientes = Arrays.asList(80, 60, 50, 40, 20);
+        cantidadCobardes = Arrays.asList(20, 40, 50, 60, 80);
     }
 
     @Test
     public void testMejorado() throws InterruptedException {
         for (Integer agentes : cantidadAgentes) {
             for (Parameters p : params) {
-                new Experimento(false, agentes, p.getC1(), p.getC2(), p.getC3Min(), TipoMovimiento.MEJORADO).test();
-                new Experimento(false, agentes, p.getC1(), p.getC2(), p.getC3Max(), TipoMovimiento.MEJORADO).test();
+                Experimento.builder()
+                        .showSimulation(false)
+                        .agentes(agentes)
+                        .c1Max(p.getC1())
+                        .c2(p.getC2())
+                        .c3(p.getC3Min())
+                        .movimiento(TipoMovimiento.MEJORADO)
+                        .build()
+                        .test();
+                Experimento.builder()
+                        .showSimulation(false)
+                        .agentes(agentes)
+                        .c1Max(p.getC1())
+                        .c2(p.getC2())
+                        .c3(p.getC3Max())
+                        .movimiento(TipoMovimiento.MEJORADO)
+                        .build()
+                        .test();
             }
         }
     }
@@ -79,8 +79,24 @@ public class Escenario3Test {
     public void testIntegral() throws InterruptedException, ExecutionException {
         for (Integer agentes : cantidadAgentes) {
             for (Parameters p : params) {
-                new Experimento(false, agentes, p.getC1(), p.getC2(), p.getC3Min(), TipoMovimiento.INTEGRAL).test();
-                new Experimento(false, agentes, p.getC1(), p.getC2(), p.getC3Max(), TipoMovimiento.INTEGRAL).test();
+                Experimento.builder()
+                        .showSimulation(false)
+                        .agentes(agentes)
+                        .c1Max(p.getC1())
+                        .c2(p.getC2())
+                        .c3(p.getC3Min())
+                        .movimiento(TipoMovimiento.INTEGRAL)
+                        .build()
+                        .test();
+                Experimento.builder()
+                        .showSimulation(false)
+                        .agentes(agentes)
+                        .c1Max(p.getC1())
+                        .c2(p.getC2())
+                        .c3(p.getC3Max())
+                        .movimiento(TipoMovimiento.INTEGRAL)
+                        .build()
+                        .test();
             }
         }
     }
@@ -89,23 +105,89 @@ public class Escenario3Test {
     public void testSpline() throws InterruptedException, ExecutionException {
         for (Integer agentes : cantidadAgentes) {
             for (Parameters p : params) {
-                new Experimento(false, agentes, p.getC1(), p.getC2(), p.getC3Min(), TipoMovimiento.SPLINE).test();
-                new Experimento(false, agentes, p.getC1(), p.getC2(), p.getC3Max(), TipoMovimiento.SPLINE).test();
+                Experimento.builder()
+                        .showSimulation(false)
+                        .agentes(agentes)
+                        .c1Max(p.getC1())
+                        .c2(p.getC2())
+                        .c3(p.getC3Min())
+                        .movimiento(TipoMovimiento.SPLINE)
+                        .build()
+                        .test();
+                Experimento.builder()
+                        .showSimulation(false)
+                        .agentes(agentes)
+                        .c1Max(p.getC1())
+                        .c2(p.getC2())
+                        .c3(p.getC3Max())
+                        .movimiento(TipoMovimiento.SPLINE)
+                        .build()
+                        .test();
             }
         }
     }
 
     @Test
-    public void testComparacion() throws InterruptedException, ExecutionException {
+    public void testValentia() {
+        IntStream.range(0, cantidadValientes.size())
+                .forEach(i -> {
+                    Experimento.builder()
+                            .showSimulation(false)
+                            .cobardes(cantidadCobardes.get(i))
+                            .valientes(cantidadValientes.get(i))
+                            .c1Max(.1)
+                            .c1Min(-.1)
+                            .c2(.2)
+                            .c3(-.1)
+                            .c2(.2)
+                            .c3(.2)
+                            .movimiento(TipoMovimiento.MEJORADO)
+                            .build()
+                            .test();
+                    Experimento.builder()
+                            .showSimulation(false)
+                            .cobardes(cantidadCobardes.get(i))
+                            .valientes(cantidadValientes.get(i))
+                            .c1Max(.1)
+                            .c1Min(-.1)
+                            .c2(.2)
+                            .c3(-.1)
+                            .c2(.2)
+                            .c3(.2)
+                            .movimiento(TipoMovimiento.SPLINE)
+                            .build()
+                            .test();
+                });
+    }
+
+    @Test
+    public void testComparacion() {
         for (Integer agentes : cantidadAgentes) {
-            new Experimento(false, agentes, .01, .2, .2, TipoMovimiento.MEJORADO).test();
-//            new Experimento(false, agentes, .01, .2, .2, TipoMovimiento.SPLINE).test();
+            Experimento.builder()
+                    .showSimulation(false)
+                    .agentes(agentes)
+                    .c1Max(.01)
+                    .c2(.2)
+                    .c3(.2)
+                    .movimiento(TipoMovimiento.MEJORADO)
+                    .build()
+                    .test();
         }
     }
 
     @Test
     public void testManualSingle() throws InterruptedException, ExecutionException {
-        new Experimento(false, 500, .9, .2, -.1, TipoMovimiento.MEJORADO).test();
+        Experimento.builder()
+                .showSimulation(false)
+                .valientes(5)
+                .cobardes(5)
+                .c1Max(.9)
+                .c1Min(-.9)
+                .c2(.2)
+                .c3(-.1)
+                .movimiento(TipoMovimiento.MEJORADO)
+                .build()
+                .test();
     }
 
     @AllArgsConstructor
@@ -114,133 +196,5 @@ public class Escenario3Test {
         private double c1, c2, c3Min, c3Max;
     }
 
-    @AllArgsConstructor
-    private final class Experimento implements Callable<Void> {
 
-        private boolean showSimulation;
-        private Integer agentes;
-        private Double c1, c2, c3;
-        private TipoMovimiento movimiento;
-
-        @Override
-        public Void call() throws Exception {
-            test();
-            return null;
-        }
-
-        public void test() {
-            try {
-                running(String.format("Prueba_%d_%1.2f_%1.2f_%1.2f_%s", agentes.intValue(),
-                        c1.doubleValue(), c2.doubleValue(), c3.doubleValue(), movimiento.name()));
-            } catch (InterruptedException e) {
-                System.err.println("Error en test");
-            }
-        }
-
-        protected void running(String name) throws InterruptedException {
-
-            int simulationDelay = 50;
-
-            StopWatch watch = new StopWatch();
-            System.out.print(name);
-            Escenarios e = Escenarios.builder()
-                    .calcularMetricas(true)
-                    .sensarEstado(false)
-                    .guardarMetricasArchivo(!showSimulation)
-                    .mostrarSimulacion(showSimulation)
-                    .iteraciones(2000)
-                    .configuracionAgente(ConfiguracionAgente.builder()
-                            .cantidadAgentes(agentes)
-                            .cantidadObjetivos(1)
-                            .radioAgente(3)
-                            .rangoDeInteraccion(25)
-                            .radioObstaculos(20)
-                            .vecindad(new VecindadObjetivos())
-                            .build())
-                    .configuracionModelo(ConfiguracionModelo.builder()
-                            .c1(c1)
-                            .c2(c2)
-                            .c3(c3)
-                            .zonaVirtual(15)
-                            .obstaculos(1)
-                            .velMax(4)
-                            .maxExtension(610)
-                            .maxPolarizacion(180)
-                            .build())
-                    .ambiente(new AmbienteMovil())
-                    .build();
-
-            for (int i = 0; i < e.getConfiguracionAgente().getCantidadObjetivos(); i++) {
-                AgenteMovilBuilder.builder()
-                        .withAmbiente(e.getAmbiente())
-                        .withX(100)
-                        .withY(100)
-                        .withConfiguracionAgente(e.getConfiguracionAgente())
-                        .withMovimiento(e.getConfiguracionModelo().buildMovimientoCuatroEsquinas())
-                        .buildObjetivo();
-            }
-
-            Vector infIzq = new Vector(0, 0);
-            Vector supDer = new Vector(700, 700);
-
-            for (int i = 0; i < e.getConfiguracionAgente().getCantidadAgentes(); i++) {
-                Vector v = Util.aleatorioEnArea(infIzq, supDer);
-                AgenteMovilBuilder.builder()
-                        .withAmbiente(e.getAmbiente())
-                        .withX(v.get(0))
-                        .withY(v.get(1))
-                        .withMovimiento(e.getConfiguracionModelo().buildMovimiento(movimiento))
-                        .withConfiguracionAgente(e.getConfiguracionAgente())
-                        .buildBoid();
-            }
-
-            assertThat(e.getAmbiente().getAgentes(), hasSize(new Double(
-                    e.getConfiguracionAgente().getCantidadAgentes() + e.getConfiguracionAgente().getCantidadObjetivos())
-                    .intValue()));
-
-            Simulacion s = Simulacion.builder()
-                    .ambiente(e.getAmbiente())
-                    .delaySimulacion(e.isMostrarSimulacion() ? simulationDelay : 0)
-                    .iteraciones(e.getIteraciones())
-                    .observadores(e.getObservadores())
-                    .habilitarPintado(e.isMostrarSimulacion())
-                    .build();
-
-            watch.start();
-            Thread t = new Thread(s);
-            t.start();
-            t.join();
-            watch.stop();
-            System.out.println(String.format("; time=%d seg", TimeUnit.MILLISECONDS.toSeconds(watch.getTime())));
-
-            if (e.isGuardarMetricasArchivo()) {
-                try {
-                    FileOutputStream report = new FileOutputStream(FileManager.crearArchivo(name, "metricas"));
-
-                    e.getConfiguracionModelo().saveToFile(report);
-                    report.flush();
-                    e.getConfiguracionAgente().saveToFile(report);
-                    report.flush();
-                    for (ObservadorAmbiente observer : s.getObservadores()) {
-                        observer.saveToFile(report);
-                        report.flush();
-                    }
-                } catch (IOException ex) {
-                    System.err.println("No se pudo crear archivo: " + ex.getLocalizedMessage());
-                }
-            }
-            if (e.isMostrarSimulacion()) {
-                for (ObservadorAmbiente observer : s.getObservadores()) {
-                    if (ObservadorMetricas.class.isAssignableFrom(observer.getClass())) {
-                        ((ObservadorMetricas) observer).mostrarReportesCortos();
-                    }
-                }
-                try {
-                    System.in.read();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        }
-    }
 }
