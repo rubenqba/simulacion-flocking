@@ -74,8 +74,8 @@ class ConfiguracionAgente implements IReportFile {
     private double rangoDeInteraccion = 25;
     private double radioObstaculos = 20;
     private double cantidadAgentes = 300;
-    private int valientes;
-    private int cobardes;
+    private int cantidadValientes;
+    private int cantidadCobardes;
     private VecindadObjetivos vecindad;
 
     @Override
@@ -88,6 +88,8 @@ class ConfiguracionAgente implements IReportFile {
         writer.newLine();
         writer.write(String.format("%-21s: %s%n", "Cantidad de Objetivos", cantidadObjetivos));
         writer.write(String.format("%-21s: %s%n", "Cantidad de Agentes", cantidadAgentes));
+        writer.write(String.format("%-21s: %s%n", "Cantidad de Valientes", cantidadValientes));
+        writer.write(String.format("%-21s: %s%n", "Cantidad de Cobardes", cantidadCobardes));
         writer.write(String.format("%-21s: %s%n", "Radio de Agente", radioAgente));
         writer.write(String.format("%-21s: %s%n", "Rango de Interacción", rangoDeInteraccion));
         writer.write(String.format("%-21s: %s%n", "Radio de Obstaculos", radioObstaculos));
