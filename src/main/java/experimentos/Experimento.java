@@ -15,7 +15,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.ReentrantLock;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -30,6 +29,7 @@ public final class Experimento implements Callable<Void> {
     private Integer cobardes;
     private Double c1Max, c1Min, c2, c3;
     private TipoMovimiento movimiento;
+    private boolean bravery = false;
 
     @Override
     public Void call() throws Exception {
@@ -38,9 +38,12 @@ public final class Experimento implements Callable<Void> {
     }
 
     public String getName() {
-        return String.format("Prueba_%d_%1.2f_%1.2f_%1.2f_%s", agentes == null ? (valientes + cobardes) : agentes
-                        .intValue(),
-                c1Max.doubleValue(), c2.doubleValue(), c3.doubleValue(), movimiento.name());
+        if (bravery)
+            return String.format("Prueba_v%d-c%d_%1.2f_%1.2f_%1.2f_%s", valientes, cobardes,
+                    c1Max.doubleValue(), c2.doubleValue(), c3.doubleValue(), movimiento.name());
+        else
+            return String.format("Prueba_%d_%1.2f_%1.2f_%1.2f_%s", agentes.intValue(),
+                    c1Max.doubleValue(), c2.doubleValue(), c3.doubleValue(), movimiento.name());
     }
 
     public void test() {
@@ -54,9 +57,8 @@ public final class Experimento implements Callable<Void> {
     protected void running() throws InterruptedException {
 
         int simulationDelay = 50;
-        boolean split = false;
         if (valientes != null && valientes > 0 && cobardes != null && cobardes > 0)
-            split = true;
+            bravery = true;
 
         StopWatch watch = new StopWatch();
         System.out.print(getName());
@@ -67,9 +69,9 @@ public final class Experimento implements Callable<Void> {
                 .mostrarSimulacion(showSimulation)
                 .iteraciones(2000)
                 .configuracionAgente(ConfiguracionAgente.builder()
-                        .cantidadAgentes(split ? valientes + cobardes : agentes)
-                        .valientes(valientes)
-                        .cobardes(cobardes)
+                        .cantidadAgentes(bravery ? valientes + cobardes : agentes)
+                        .cantidadValientes(valientes)
+                        .cantidadCobardes(cobardes)
                         .cantidadObjetivos(1)
                         .radioAgente(3)
                         .rangoDeInteraccion(25)
@@ -104,13 +106,13 @@ public final class Experimento implements Callable<Void> {
         Vector supDer = new Vector(Ambiente.tamx, Ambiente.tamy);
         builder.withMovimiento(e.getConfiguracionModelo().buildMovimiento(movimiento));
 
-        if (split) {
-            for (int i = 0; i < e.getConfiguracionAgente().getValientes(); i++) {
+        if (bravery) {
+            for (int i = 0; i < e.getConfiguracionAgente().getCantidadValientes(); i++) {
                 Vector v = Util.aleatorioEnArea(infIzq, supDer);
                 builder.buildBoid(v.get(0), v.get(1));
             }
             builder.withCourage(false);
-            for (int i = 0; i < e.getConfiguracionAgente().getCobardes(); i++) {
+            for (int i = 0; i < e.getConfiguracionAgente().getCantidadCobardes(); i++) {
                 Vector v = Util.aleatorioEnArea(infIzq, supDer);
                 builder.buildBoid(v.get(0), v.get(1));
             }
