@@ -141,7 +141,6 @@ public class MovimientoBoid implements Movimiento {
 
         if (magnitud > velMax) {
             velocidad.multiplicarEscalar(velMax / magnitud);
-
         }
     }
 
