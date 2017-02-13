@@ -70,9 +70,9 @@ public class MovimientoBoid implements Movimiento {
 
         primerTermino.multiplicarEscalar(boid.isCourage()? c1 : c1Min);
         segundoTermino.restar(boid.getPosicion());
-        segundoTermino.multiplicarEscalar(c2 * Random.getInstance().getRandom().nextDouble());
+        segundoTermino.multiplicarEscalar(c2 * RandomGenerator.getInstance().getRandom().nextDouble());
         tercerTermino.restar(boid.getPosicion());
-        tercerTermino.multiplicarEscalar(c3 * Random.getInstance().getRandom().nextDouble());
+        tercerTermino.multiplicarEscalar(c3 * RandomGenerator.getInstance().getRandom().nextDouble());
 
         Vector velocidad = new Vector(primerTermino.getDimension());
 

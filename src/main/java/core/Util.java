@@ -71,7 +71,7 @@ public class Util {
         for (int i = 0; i < dimension; i++) {
             double transi = esquinaInferiorIzq.get(i);
             double maxi = esquinaSupDer.get(i) - transi;
-            cord[i] = Random.getInstance().getRandom().nextDouble() * maxi;
+            cord[i] = RandomGenerator.getInstance().getRandom().nextDouble() * maxi;
             cord[i] += transi;
         }
 
@@ -85,7 +85,7 @@ public class Util {
         for (int i = 0; i < dimension; i++) {
 
             double maxi = vol.get(i);
-            cord[i] = Random.getInstance().getRandom().nextDouble() * maxi;
+            cord[i] = RandomGenerator.getInstance().getRandom().nextDouble() * maxi;
             cord[i] = cord[i] - maxi / 2;
         }
 

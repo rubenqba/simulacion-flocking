@@ -53,24 +53,36 @@ public class Escenario3Test {
     public void testMejorado() throws InterruptedException {
         for (Integer agentes : cantidadAgentes) {
             for (Parameters p : params) {
-                Experimento.builder()
-                        .showSimulation(false)
-                        .agentes(agentes)
-                        .c1Max(p.getC1())
-                        .c2(p.getC2())
-                        .c3(p.getC3Min())
-                        .movimiento(TipoMovimiento.MEJORADO)
-                        .build()
-                        .test();
-                Experimento.builder()
-                        .showSimulation(false)
-                        .agentes(agentes)
-                        .c1Max(p.getC1())
-                        .c2(p.getC2())
-                        .c3(p.getC3Max())
-                        .movimiento(TipoMovimiento.MEJORADO)
-                        .build()
-                        .test();
+                for (int i = 0; i < 30; i++) {
+                    Experimento.builder()
+                            .showSimulation(false)
+                            .agentes(agentes)
+                            .c1Min(p.getC1())
+                            .c1Max(p.getC1())
+                            .c2(p.getC2())
+                            .c3(p.getC3Min())
+                            .valientes(0)
+                            .cobardes(0)
+                            .movimiento(TipoMovimiento.MEJORADO)
+                            .build()
+                            .test();
+                }
+                if (p.getC3Min() != p.getC3Max()) {
+                    for (int i = 0; i < 30; i++) {
+                        Experimento.builder()
+                                .showSimulation(false)
+                                .agentes(agentes)
+                                .c1Min(p.getC1())
+                                .c1Max(p.getC1())
+                                .c2(p.getC2())
+                                .c3(p.getC3Max())
+                                .valientes(0)
+                                .cobardes(0)
+                                .movimiento(TipoMovimiento.MEJORADO)
+                                .build()
+                                .test();
+                    }
+                }
             }
         }
     }

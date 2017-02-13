@@ -56,68 +56,68 @@ public class Escenario3 {
 		objetivos.add(objetivo4);*/
 
         MovimientoCuatroEsquinas movObjetivo = new MovimientoCuatroEsquinas();
-        movObjetivo.setEsquinaSupIzq(new Vector((Random.getInstance().getRandom().nextDouble() * volumen) - 50,
-                (Random.getInstance().getRandom().nextDouble() * volumen) - 50, (Random.getInstance().getRandom()
+        movObjetivo.setEsquinaSupIzq(new Vector((RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50,
+                (RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50, (RandomGenerator.getInstance().getRandom()
                 .nextDouble() * volumen) - 50));
-        movObjetivo.setEsquinaSupDer(new Vector((Random.getInstance().getRandom().nextDouble() * volumen) - 50,
-                (Random.getInstance().getRandom().nextDouble() * volumen) - 50, (Random.getInstance().getRandom()
+        movObjetivo.setEsquinaSupDer(new Vector((RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50,
+                (RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50, (RandomGenerator.getInstance().getRandom()
                 .nextDouble() * volumen) - 50));
-        movObjetivo.setEsquinaInfDer(new Vector((Random.getInstance().getRandom().nextDouble() * volumen) - 50,
-                (Random.getInstance().getRandom().nextDouble() * volumen) - 50, (Random.getInstance().getRandom()
+        movObjetivo.setEsquinaInfDer(new Vector((RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50,
+                (RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50, (RandomGenerator.getInstance().getRandom()
                 .nextDouble() * volumen) - 50));
-        movObjetivo.setEsquinaInfIzq(new Vector((Random.getInstance().getRandom().nextDouble() * volumen) - 50,
-                (Random.getInstance().getRandom().nextDouble() * volumen) - 50, (Random.getInstance().getRandom()
+        movObjetivo.setEsquinaInfIzq(new Vector((RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50,
+                (RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50, (RandomGenerator.getInstance().getRandom()
                 .nextDouble() * volumen) - 50));
 
         movObjetivo.setVelMax(velMax + (velMax * .1));
         objetivo1.setMov(movObjetivo);
 
         MovimientoCuatroEsquinas movObjetivo2 = new MovimientoCuatroEsquinas();
-        movObjetivo2.setEsquinaSupIzq(new Vector((Random.getInstance().getRandom().nextDouble() * volumen) - 50,
-                (Random.getInstance().getRandom().nextDouble() * volumen) - 50, (Random.getInstance().getRandom()
+        movObjetivo2.setEsquinaSupIzq(new Vector((RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50,
+                (RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50, (RandomGenerator.getInstance().getRandom()
                 .nextDouble() * volumen) - 50));
-        movObjetivo2.setEsquinaSupDer(new Vector((Random.getInstance().getRandom().nextDouble() * volumen) - 50,
-                (Random.getInstance().getRandom().nextDouble() * volumen) - 50, (Random.getInstance().getRandom()
+        movObjetivo2.setEsquinaSupDer(new Vector((RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50,
+                (RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50, (RandomGenerator.getInstance().getRandom()
                 .nextDouble() * volumen) - 50));
-        movObjetivo2.setEsquinaInfDer(new Vector((Random.getInstance().getRandom().nextDouble() * volumen) - 50,
-                (Random.getInstance().getRandom().nextDouble() * volumen) - 50, (Random.getInstance().getRandom()
+        movObjetivo2.setEsquinaInfDer(new Vector((RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50,
+                (RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50, (RandomGenerator.getInstance().getRandom()
                 .nextDouble() * volumen) - 50));
-        movObjetivo2.setEsquinaInfIzq(new Vector((Random.getInstance().getRandom().nextDouble() * volumen) - 50,
-                (Random.getInstance().getRandom().nextDouble() * volumen) - 50, (Random.getInstance().getRandom()
+        movObjetivo2.setEsquinaInfIzq(new Vector((RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50,
+                (RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50, (RandomGenerator.getInstance().getRandom()
                 .nextDouble() * volumen) - 50));
 
         movObjetivo2.setVelMax(velMax + (velMax * .1));
         //objetivo2.setMov(movObjetivo2);
 
         MovimientoCuatroEsquinas movObjetivo3 = new MovimientoCuatroEsquinas();
-        movObjetivo3.setEsquinaSupIzq(new Vector((Random.getInstance().getRandom().nextDouble() * volumen) - 50,
-                (Random.getInstance().getRandom().nextDouble() * volumen) - 50, (Random.getInstance().getRandom()
+        movObjetivo3.setEsquinaSupIzq(new Vector((RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50,
+                (RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50, (RandomGenerator.getInstance().getRandom()
                 .nextDouble() * volumen) - 50));
-        movObjetivo3.setEsquinaSupDer(new Vector((Random.getInstance().getRandom().nextDouble() * volumen) - 50,
-                (Random.getInstance().getRandom().nextDouble() * volumen) - 50, (Random.getInstance().getRandom()
+        movObjetivo3.setEsquinaSupDer(new Vector((RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50,
+                (RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50, (RandomGenerator.getInstance().getRandom()
                 .nextDouble() * volumen) - 50));
-        movObjetivo3.setEsquinaInfDer(new Vector((Random.getInstance().getRandom().nextDouble() * volumen) - 50,
-                (Random.getInstance().getRandom().nextDouble() * volumen) - 50, (Random.getInstance().getRandom()
+        movObjetivo3.setEsquinaInfDer(new Vector((RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50,
+                (RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50, (RandomGenerator.getInstance().getRandom()
                 .nextDouble() * volumen) - 50));
-        movObjetivo3.setEsquinaInfIzq(new Vector((Random.getInstance().getRandom().nextDouble() * volumen) - 50,
-                (Random.getInstance().getRandom().nextDouble() * volumen) - 50, (Random.getInstance().getRandom()
+        movObjetivo3.setEsquinaInfIzq(new Vector((RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50,
+                (RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50, (RandomGenerator.getInstance().getRandom()
                 .nextDouble() * volumen) - 50));
 
         movObjetivo3.setVelMax(velMax + (velMax * .1));
         //objetivo3.setMov(movObjetivo3);
 
         MovimientoCuatroEsquinas movObjetivo4 = new MovimientoCuatroEsquinas();
-        movObjetivo4.setEsquinaSupIzq(new Vector((Random.getInstance().getRandom().nextDouble() * volumen) - 50,
-                (Random.getInstance().getRandom().nextDouble() * volumen) - 50, (Random.getInstance().getRandom()
+        movObjetivo4.setEsquinaSupIzq(new Vector((RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50,
+                (RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50, (RandomGenerator.getInstance().getRandom()
                 .nextDouble() * volumen) - 50));
-        movObjetivo4.setEsquinaSupDer(new Vector((Random.getInstance().getRandom().nextDouble() * volumen) - 50,
-                (Random.getInstance().getRandom().nextDouble() * volumen) - 50, (Random.getInstance().getRandom()
+        movObjetivo4.setEsquinaSupDer(new Vector((RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50,
+                (RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50, (RandomGenerator.getInstance().getRandom()
                 .nextDouble() * volumen) - 50));
-        movObjetivo4.setEsquinaInfDer(new Vector((Random.getInstance().getRandom().nextDouble() * volumen) - 50,
-                (Random.getInstance().getRandom().nextDouble() * volumen) - 50, (Random.getInstance().getRandom()
+        movObjetivo4.setEsquinaInfDer(new Vector((RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50,
+                (RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50, (RandomGenerator.getInstance().getRandom()
                 .nextDouble() * volumen) - 50));
-        movObjetivo4.setEsquinaInfIzq(new Vector((Random.getInstance().getRandom().nextDouble() * volumen) - 50,
-                (Random.getInstance().getRandom().nextDouble() * volumen) - 50, (Random.getInstance().getRandom()
+        movObjetivo4.setEsquinaInfIzq(new Vector((RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50,
+                (RandomGenerator.getInstance().getRandom().nextDouble() * volumen) - 50, (RandomGenerator.getInstance().getRandom()
                 .nextDouble() * volumen) - 50));
 
         movObjetivo4.setVelMax(velMax + (velMax * .1));
