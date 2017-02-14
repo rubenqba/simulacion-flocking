@@ -5,6 +5,7 @@ import implementacion.TipoMovimiento;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -50,6 +51,7 @@ public class Escenario3Test {
     }
 
     @Test
+    @Ignore
     public void testMejorado() throws InterruptedException {
         for (Integer agentes : cantidadAgentes) {
             for (Parameters p : params) {
@@ -91,24 +93,36 @@ public class Escenario3Test {
     public void testIntegral() throws InterruptedException, ExecutionException {
         for (Integer agentes : cantidadAgentes) {
             for (Parameters p : params) {
-                Experimento.builder()
-                        .showSimulation(false)
-                        .agentes(agentes)
-                        .c1Max(p.getC1())
-                        .c2(p.getC2())
-                        .c3(p.getC3Min())
-                        .movimiento(TipoMovimiento.INTEGRAL)
-                        .build()
-                        .test();
-                Experimento.builder()
-                        .showSimulation(false)
-                        .agentes(agentes)
-                        .c1Max(p.getC1())
-                        .c2(p.getC2())
-                        .c3(p.getC3Max())
-                        .movimiento(TipoMovimiento.INTEGRAL)
-                        .build()
-                        .test();
+                for (int i = 0; i < 30; i++) {
+                    Experimento.builder()
+                            .showSimulation(false)
+                            .agentes(agentes)
+                            .c1Min(p.getC1())
+                            .c1Max(p.getC1())
+                            .c2(p.getC2())
+                            .c3(p.getC3Min())
+                            .valientes(0)
+                            .cobardes(0)
+                            .movimiento(TipoMovimiento.INTEGRAL)
+                            .build()
+                            .test();
+                }
+                if (p.getC3Min() != p.getC3Max()) {
+                    for (int i = 0; i < 30; i++) {
+                        Experimento.builder()
+                                .showSimulation(false)
+                                .agentes(agentes)
+                                .c1Min(p.getC1())
+                                .c1Max(p.getC1())
+                                .c2(p.getC2())
+                                .c3(p.getC3Max())
+                                .valientes(0)
+                                .cobardes(0)
+                                .movimiento(TipoMovimiento.INTEGRAL)
+                                .build()
+                                .test();
+                    }
+                }
             }
         }
     }
@@ -117,24 +131,36 @@ public class Escenario3Test {
     public void testSpline() throws InterruptedException, ExecutionException {
         for (Integer agentes : cantidadAgentes) {
             for (Parameters p : params) {
-                Experimento.builder()
-                        .showSimulation(false)
-                        .agentes(agentes)
-                        .c1Max(p.getC1())
-                        .c2(p.getC2())
-                        .c3(p.getC3Min())
-                        .movimiento(TipoMovimiento.SPLINE)
-                        .build()
-                        .test();
-                Experimento.builder()
-                        .showSimulation(false)
-                        .agentes(agentes)
-                        .c1Max(p.getC1())
-                        .c2(p.getC2())
-                        .c3(p.getC3Max())
-                        .movimiento(TipoMovimiento.SPLINE)
-                        .build()
-                        .test();
+                for (int i = 0; i < 30; i++) {
+                    Experimento.builder()
+                            .showSimulation(false)
+                            .agentes(agentes)
+                            .c1Min(p.getC1())
+                            .c1Max(p.getC1())
+                            .c2(p.getC2())
+                            .c3(p.getC3Min())
+                            .valientes(0)
+                            .cobardes(0)
+                            .movimiento(TipoMovimiento.SPLINE)
+                            .build()
+                            .test();
+                }
+                if (p.getC3Min() != p.getC3Max()) {
+                    for (int i = 0; i < 30; i++) {
+                        Experimento.builder()
+                                .showSimulation(false)
+                                .agentes(agentes)
+                                .c1Min(p.getC1())
+                                .c1Max(p.getC1())
+                                .c2(p.getC2())
+                                .c3(p.getC3Max())
+                                .valientes(0)
+                                .cobardes(0)
+                                .movimiento(TipoMovimiento.SPLINE)
+                                .build()
+                                .test();
+                    }
+                }
             }
         }
     }
@@ -143,76 +169,79 @@ public class Escenario3Test {
     public void testValentia() {
         IntStream.range(0, cantidadValientes.size())
                 .forEach(i -> {
-                    Experimento.builder()
-                            .showSimulation(false)
-                            .cobardes(cantidadCobardes.get(i))
-                            .valientes(cantidadValientes.get(i))
-                            .c1Max(.1)
-                            .c1Min(-.1)
-                            .c2(.2)
-                            .c3(-.1)
-                            .movimiento(TipoMovimiento.MEJORADO)
-                            .build()
-                            .test();
-                    Experimento.builder()
-                            .showSimulation(false)
-                            .cobardes(cantidadCobardes.get(i))
-                            .valientes(cantidadValientes.get(i))
-                            .c1Max(.5)
-                            .c1Min(-.5)
-                            .c2(.2)
-                            .c3(-.1)
-                            .movimiento(TipoMovimiento.MEJORADO)
-                            .build()
-                            .test();
-                    Experimento.builder()
-                            .showSimulation(false)
-                            .cobardes(cantidadCobardes.get(i))
-                            .valientes(cantidadValientes.get(i))
-                            .c1Max(.9)
-                            .c1Min(-.9)
-                            .c2(.2)
-                            .c3(-.1)
-                            .movimiento(TipoMovimiento.MEJORADO)
-                            .build()
-                            .test();
-                    Experimento.builder()
-                            .showSimulation(false)
-                            .cobardes(cantidadCobardes.get(i))
-                            .valientes(cantidadValientes.get(i))
-                            .c1Max(.1)
-                            .c1Min(-.1)
-                            .c2(.2)
-                            .c3(-.1)
-                            .movimiento(TipoMovimiento.SPLINE)
-                            .build()
-                            .test();
-                    Experimento.builder()
-                            .showSimulation(false)
-                            .cobardes(cantidadCobardes.get(i))
-                            .valientes(cantidadValientes.get(i))
-                            .c1Max(.5)
-                            .c1Min(-.5)
-                            .c2(.2)
-                            .c3(-.1)
-                            .movimiento(TipoMovimiento.SPLINE)
-                            .build()
-                            .test();
-                    Experimento.builder()
-                            .showSimulation(false)
-                            .cobardes(cantidadCobardes.get(i))
-                            .valientes(cantidadValientes.get(i))
-                            .c1Max(.9)
-                            .c1Min(-.9)
-                            .c2(.2)
-                            .c3(-.1)
-                            .movimiento(TipoMovimiento.SPLINE)
-                            .build()
-                            .test();
+                    for (int j = 0; j < 30; j++) {
+                        Experimento.builder()
+                                .showSimulation(false)
+                                .cobardes(cantidadCobardes.get(i))
+                                .valientes(cantidadValientes.get(i))
+                                .c1Max(.1)
+                                .c1Min(-.1)
+                                .c2(.2)
+                                .c3(-.1)
+                                .movimiento(TipoMovimiento.MEJORADO)
+                                .build()
+                                .test();
+                        Experimento.builder()
+                                .showSimulation(false)
+                                .cobardes(cantidadCobardes.get(i))
+                                .valientes(cantidadValientes.get(i))
+                                .c1Max(.5)
+                                .c1Min(-.5)
+                                .c2(.2)
+                                .c3(-.1)
+                                .movimiento(TipoMovimiento.MEJORADO)
+                                .build()
+                                .test();
+                        Experimento.builder()
+                                .showSimulation(false)
+                                .cobardes(cantidadCobardes.get(i))
+                                .valientes(cantidadValientes.get(i))
+                                .c1Max(.9)
+                                .c1Min(-.9)
+                                .c2(.2)
+                                .c3(-.1)
+                                .movimiento(TipoMovimiento.MEJORADO)
+                                .build()
+                                .test();
+                        Experimento.builder()
+                                .showSimulation(false)
+                                .cobardes(cantidadCobardes.get(i))
+                                .valientes(cantidadValientes.get(i))
+                                .c1Max(.1)
+                                .c1Min(-.1)
+                                .c2(.2)
+                                .c3(-.1)
+                                .movimiento(TipoMovimiento.SPLINE)
+                                .build()
+                                .test();
+                        Experimento.builder()
+                                .showSimulation(false)
+                                .cobardes(cantidadCobardes.get(i))
+                                .valientes(cantidadValientes.get(i))
+                                .c1Max(.5)
+                                .c1Min(-.5)
+                                .c2(.2)
+                                .c3(-.1)
+                                .movimiento(TipoMovimiento.SPLINE)
+                                .build()
+                                .test();
+                        Experimento.builder()
+                                .showSimulation(false)
+                                .cobardes(cantidadCobardes.get(i))
+                                .valientes(cantidadValientes.get(i))
+                                .c1Max(.9)
+                                .c1Min(-.9)
+                                .c2(.2)
+                                .c3(-.1)
+                                .movimiento(TipoMovimiento.SPLINE)
+                                .build()
+                                .test();
+                    }
                 });
     }
 
     @Test
+    @Ignore
     public void testComparacion() {
         for (Integer agentes : cantidadAgentes) {
             Experimento.builder()
@@ -228,6 +257,7 @@ public class Escenario3Test {
     }
 
     @Test
+    @Ignore
     public void testManualSingle() throws InterruptedException, ExecutionException {
         Experimento.builder()
                 .showSimulation(false)
