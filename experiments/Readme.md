@@ -3,10 +3,16 @@ Experiments
 
 # Requirements
 
-Command line executables
+Ubuntu packages:
 
     1. `egrep`
-    2. `awk`
-    3. `tr`
-    4. `rs`
+    3. `r-base-core`
+
+# Usage
+
+```bash
+./process_all /path/to/simulation/dir
+```
+
+The final count is found in file final.csv
 
