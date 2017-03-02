@@ -11,5 +11,7 @@ pushd ..;
 for i in $tests; do
     mvn -q clean test -Dtest="${i}Test";
     pushd target; 
-    7z a ../../simulacion-${i,,}-$(date +%Y%m%d).7z
+    7z a ../../simulacion-${i,,}-$(date +%Y%m%d).7z simulaciones
+done;
+    
 popd;
