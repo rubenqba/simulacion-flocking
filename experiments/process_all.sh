@@ -9,7 +9,7 @@ for i in "$simulations"/*; do
 
     name=data/$(basename "$i").csv
     echo "generando $name..."
-    ./trans.sh "$i" | ./reduce.r > $name
+    ./trans.sh "$i" | sort -r | uniq | ./reduce_experiment.r > $name
 done;
 
 cat data/*.csv | sort -r | uniq > final.csv

@@ -23,27 +23,27 @@ public class Escenario3Test {
     public void setup() {
         params = Arrays.asList(
                 new Parameters(-0.9, 0.2, -0.1, -0.1),
-                new Parameters(-0.8, 0.2, -0.1, 0.1),
-                new Parameters(-0.7, 0.2, -0.1, 0.3),
-                new Parameters(-0.6, 0.2, -0.1, 0.5),
+//                new Parameters(-0.8, 0.2, -0.1, 0.1),
+//                new Parameters(-0.7, 0.2, -0.1, 0.3),
+//                new Parameters(-0.6, 0.2, -0.1, 0.5),
                 new Parameters(-0.5, 0.2, -0.1, 0.7),
-                new Parameters(-0.4, 0.2, -0.1, 0.9),
-                new Parameters(-0.3, 0.2, -0.1, 1.1),
-                new Parameters(-0.2, 0.2, -0.1, 1.3),
-                new Parameters(-0.1, 0.2, -0.1, 1.5),
+//                new Parameters(-0.4, 0.2, -0.1, 0.9),
+//                new Parameters(-0.3, 0.2, -0.1, 1.1),
+//                new Parameters(-0.2, 0.2, -0.1, 1.3),
+//                new Parameters(-0.1, 0.2, -0.1, 1.5),
                 new Parameters(0, 0.2, -0.1, 1.7),
-                new Parameters(0.1, 0.2, -0.1, 1.9),
-                new Parameters(0.2, 0.2, -0.1, 2.1),
-                new Parameters(0.3, 0.2, -0.1, 2.3),
-                new Parameters(0.4, 0.2, -0.1, 2.5),
+//                new Parameters(0.1, 0.2, -0.1, 1.9),
+//                new Parameters(0.2, 0.2, -0.1, 2.1),
+//                new Parameters(0.3, 0.2, -0.1, 2.3),
+//                new Parameters(0.4, 0.2, -0.1, 2.5),
                 new Parameters(0.5, 0.2, -0.1, 2.7),
-                new Parameters(0.6, 0.2, -0.1, 2.9),
-                new Parameters(0.7, 0.2, -0.1, 3.1),
-                new Parameters(0.8, 0.2, -0.1, 3.3),
+//                new Parameters(0.6, 0.2, -0.1, 2.9),
+//                new Parameters(0.7, 0.2, -0.1, 3.1),
+//                new Parameters(0.8, 0.2, -0.1, 3.3),
                 new Parameters(0.9, 0.2, -0.1, 3.5)
         );
 
-        cantidadAgentes = Arrays.asList(100, 150, 200, 250, 300, 350, 400, 450, 500);
+        cantidadAgentes = Arrays.asList(100, 200, 300, 400, 500);
 
         cantidadValientes = Arrays.asList(80, 60, 50, 40, 20);
         cantidadCobardes = Arrays.asList(20, 40, 50, 60, 80);
